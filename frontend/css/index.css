@@ -25,6 +25,16 @@ input.search-rental {
 .car-item {
   width: 20rem;
   height: 10rem;
-  background: grey;
+  background-color: rgb(14, 14, 14);
   border-radius: 1rem;
+  background-image: url("https://freepngimg.com/thumb/car/3-2-car-free-download-png.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+.car-item:hover {
+  transform: scale(1.2);
+  box-shadow: 0px 0px 10px 2px black;
 }

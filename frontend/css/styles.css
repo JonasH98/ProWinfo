@@ -42,6 +42,7 @@ input {
 input:active,
 input:focus {
   border-color: grey;
+  background: black;
 }
 
 navbar {
