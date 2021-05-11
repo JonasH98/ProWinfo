@@ -1,0 +1,16 @@
+main {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10rem;
+}
+
+.search-box {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+input.search-rental {
+  width: 70%;
+  padding: 1.5rem;
+  font-size: 2rem;
+}
