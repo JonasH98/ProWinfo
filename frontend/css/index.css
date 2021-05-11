@@ -35,6 +35,6 @@ input.search-rental {
   cursor: pointer;
 }
 .car-item:hover {
-  transform: scale(1.2);
+  transform: scale(1.4);
   box-shadow: 0px 0px 10px 2px black;
 }

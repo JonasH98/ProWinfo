@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/overview.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autovermietung</title>
+  </head>
+  <body>
+    <navbar>
+      <div class="nav-group">
+        <h1>LOGO IST HIER</h1>
+      </div>
+      <div class="nav-group">
+        <h1>Autos</h1>
+      </div>
+      <div class="nav-group">
+        <button>Login</button>
+        <button>Registrieren</button>
+      </div>
+    </navbar>
+    <main>
+      <div class="sidebar sidebar-left">
+        <div class="sidebar-header">
+          <h3>Filtern</h3>
+          <i class="fas fa-times-circle fa-lg"></i>
+        </div>
+      </div>
+      <div class="content">
+        <h2>HIER STEHT NE LISTE DER AUTOS</h2>
+      </div>
+      <div class="sidebar sidebar-right">
+        <div class="sidebar-header">
+          <i class="fas fa-times-circle fa-lg"></i>
+          <h3>Filtern</h3>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script>
+    $(".sidebar-left .sidebar-header").click(function () {
+      $(".sidebar-left").toggleClass("sidebar-left-hidden");
+    });
+    $(".sidebar-right .sidebar-header").click(function () {
+      $(".sidebar-right").toggleClass("sidebar-right-hidden");
+    });
+
+    for (let i = 0; i < 5; i++) {
+      const htmlbums = `<div class="car-item">
+          <div class="car-img">
+            <img
+              src="https://freepngimg.com/thumb/car/3-2-car-free-download-png.png"
+              width="300"
+            />
+          </div>
+          <div class="car-info">Hier stehen infos zum der karre</div>
+          <div class="car-actions">
+            <button>Reservieren</button>
+          </div>
+        </div>`;
+      $(".content").append(htmlbums);
+    }
+  </script>
+</html>
