@@ -2,6 +2,7 @@ main {
   display: flex;
   flex-direction: column;
   margin-top: 10rem;
+  gap: 4rem;
 }
 
 .search-box {
@@ -13,4 +14,17 @@ input.search-rental {
   width: 70%;
   padding: 1.5rem;
   font-size: 2rem;
+}
+
+.car-list {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.car-item {
+  width: 20rem;
+  height: 10rem;
+  background: grey;
+  border-radius: 1rem;
 }
