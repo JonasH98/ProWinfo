@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autovermietung-Login</title>
+  </head>
+  <body>
+    <navbar>
+      <div class="nav-group">
+        <h1>LOGO IST HIER</h1>
+      </div>
+      <div class="nav-group">
+        <h2>Anmeldung und Registrierung</h2>
+      </div>
+    </navbar>
+    <main>
+      <div class="form-switcher">
+        <span class="switcher-btn active" form-id="login-form">Login</span>
+        <span class="switcher-btn" form-id="register-form">Registrieren</span>
+      </div>
+      <div class="form-wrapper">
+        <form id="login-form">
+          <input type="text" name="username" placeholder="Benutzername" />
+          <input type="password" name="password" placeholder="• • • • • •" />
+          <button class="submit-form" form-id="login-form">Login</button>
+        </form>
+        <form id="register-form" class="form-hidden">
+          <input
+            type="text"
+            name="username"
+            placeholder="Benutzername hier eintragen"
+          />
+          <input type="email" name="email" placeholder="Email hier eintragen" />
+          <input
+            type="email"
+            name="email-verify"
+            placeholder="Email bestätigen"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Passwort eintragen"
+          />
+          <input
+            type="password"
+            name="password-verify"
+            placeholder="Passwort wiederholen"
+          />
+          <button class="submit-form" form-id="register-form">
+            Registrieren
+          </button>
+        </form>
+      </div>
+    </main>
+  </body>
+  <script>
+    let searchParams = new URLSearchParams(window.location.search);
+
+    $(".switcher-btn").click(function (e) {
+      const form = $(this).attr("form-id");
+      $(".form-wrapper form").addClass("form-hidden");
+      $("#" + form).removeClass("form-hidden");
+      $(".switcher-btn").removeClass("active");
+      $(this).addClass("active");
+    });
+    $(".submit-form").click(function (e) {
+      e.preventDefault();
+      const form = $(this).attr("form-id");
+      const formData = $("#" + form);
+      console.log();
+    });
+
+    //check params and switch tabs if needed
+    if (searchParams.has("tab")) {
+      const selectedForm = searchParams.get("tab");
+      $(`.switcher-btn[form-id="${selectedForm}"]`).click();
+    }
+  </script>
+</html>

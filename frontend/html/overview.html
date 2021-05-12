@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/overview.css" />
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/overview.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -28,8 +29,8 @@
         <h1>Autos</h1>
       </div>
       <div class="nav-group">
-        <button>Login</button>
-        <button>Registrieren</button>
+        <a href="login.html"><button>Login</button></a>
+        <a href="login.html?tab=register-form"><button>Registrieren</button></a>
       </div>
     </navbar>
     <main>
@@ -40,7 +41,15 @@
         </div>
       </div>
       <div class="content">
-        <h2>HIER STEHT NE LISTE DER AUTOS</h2>
+        <lottie-player
+          id="loading-animation-lottie"
+          src="https://assets10.lottiefiles.com/packages/lf20_QPewua.json"
+          background="transparent"
+          speed="1"
+          style="width: 300px; height: 300px"
+          loop
+          autoplay
+        ></lottie-player>
       </div>
       <div class="sidebar sidebar-right">
         <div class="sidebar-header">
@@ -51,15 +60,8 @@
     </main>
   </body>
   <script>
-    $(".sidebar-left .sidebar-header").click(function () {
-      $(".sidebar-left").toggleClass("sidebar-left-hidden");
-    });
-    $(".sidebar-right .sidebar-header").click(function () {
-      $(".sidebar-right").toggleClass("sidebar-right-hidden");
-    });
-
-    for (let i = 0; i < 5; i++) {
-      const htmlbums = `<div class="car-item">
+    const createCarElement = (data) => {
+      return `<div class="car-item">
           <div class="car-img">
             <img
               src="https://freepngimg.com/thumb/car/3-2-car-free-download-png.png"
@@ -71,7 +73,20 @@
             <button>Reservieren</button>
           </div>
         </div>`;
-      $(".content").append(htmlbums);
-    }
+    };
+
+    $(".sidebar-left .sidebar-header").click(function () {
+      $(".sidebar-left").toggleClass("sidebar-left-hidden");
+    });
+    $(".sidebar-right .sidebar-header").click(function () {
+      $(".sidebar-right").toggleClass("sidebar-right-hidden");
+    });
+
+    setTimeout(() => {
+      $("#loading-animation-lottie").css("display", "none");
+      for (let i = 0; i < 5; i++) {
+        $(".content").append(createCarElement());
+      }
+    }, 3000);
   </script>
 </html>
