@@ -60,6 +60,9 @@
           </button>
         </form>
       </div>
+      <div class="other-actions">
+        <button class="go-back-btn">Zurück</button>
+      </div>
     </main>
   </body>
   <script>
@@ -69,14 +72,19 @@
       const form = $(this).attr("form-id");
       $(".form-wrapper form").addClass("form-hidden");
       $("#" + form).removeClass("form-hidden");
+
       $(".switcher-btn").removeClass("active");
       $(this).addClass("active");
     });
     $(".submit-form").click(function (e) {
       e.preventDefault();
       const form = $(this).attr("form-id");
-      const formData = $("#" + form);
-      console.log();
+      let formData = document.getElementById(form);
+      formData = new FormData(formData);
+      console.log(Object.fromEntries(formData));
+    });
+    $(".go-back-btn").click(function (e) {
+      window.history.back();
     });
 
     //check params and switch tabs if needed

@@ -24,6 +24,13 @@ button {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
+button.btn-small {
+  font-size: small !important;
+}
+button.btn-large {
+  font-size: x-large !important;
+}
 button:hover {
   box-shadow: 0px 5px 15px -4px var(--col-accent);
   background: var(--bg-very-dark);

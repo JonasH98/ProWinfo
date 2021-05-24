@@ -39,6 +39,107 @@
           <h3>Filtern</h3>
           <i class="fas fa-times-circle fa-lg"></i>
         </div>
+        <div class="sidebar-content">
+          <!--##############################-->
+          <div class="filter-group filter-group-car-type">
+            <div class="filter-group-header">
+              <h3>Auto-Typ</h3>
+            </div>
+            <div class="filter-group-content">
+              <div class="filter-btn filter-btn-car-type">
+                <i class="fas fa-car"></i>
+                <span>Kleinwagen</span>
+              </div>
+              <div class="filter-btn filter-btn-car-type">
+                <i class="fas fa-car"></i>
+                <span>Kompaktwagen</span>
+              </div>
+              <div class="filter-btn filter-btn-car-type">
+                <i class="fas fa-car"></i>
+                <span>Mittelklasse</span>
+              </div>
+              <div class="filter-btn filter-btn-car-type">
+                <i class="fas fa-car"></i>
+                <span>Oberklasse</span>
+              </div>
+              <div class="filter-btn filter-btn-car-type">
+                <i class="fas fa-car"></i>
+                <span>SUV</span>
+              </div>
+              <div class="filter-btn filter-btn-car-type">
+                <i class="fas fa-car"></i>
+                <span>Kombi</span>
+              </div>
+            </div>
+          </div>
+          <!--##############################-->
+          <!--##############################-->
+          <div class="filter-group filter-group-doors">
+            <div class="filter-group-header">
+              <h3>Türen</h3>
+            </div>
+            <div class="filter-group-content">
+              <div class="filter-btn filter-btn-doors">
+                <span>2-3</span>
+              </div>
+              <div class="filter-btn filter-btn-doors">
+                <span>4-5</span>
+              </div>
+            </div>
+          </div>
+          <!--##############################-->
+          <!--##############################-->
+          <div class="filter-group filter-group-additions">
+            <div class="filter-group-header">
+              <h3>Zubehör</h3>
+            </div>
+            <div class="filter-group-content">
+              <div class="filter-btn filter-btn-additions">
+                <span>Navigation</span>
+              </div>
+              <div class="filter-btn filter-btn-additions">
+                <span>Klimaanlage</span>
+              </div>
+              <div class="filter-btn filter-btn-additions">
+                <span>Automatik</span>
+              </div>
+              <div class="filter-btn filter-btn-additions">
+                <span>Winterreifen</span>
+              </div>
+            </div>
+          </div>
+          <!--##############################-->
+          <!--##############################-->
+          <div class="filter-group filter-group-extras">
+            <div class="filter-group-header">
+              <h3>Extras</h3>
+            </div>
+            <div class="filter-group-content">
+              <div class="filter-btn filter-btn-extras">
+                <span>Haftpflichtversicherung</span>
+              </div>
+              <div class="filter-btn filter-btn-extras">
+                <span>Freikilometer(750)</span>
+              </div>
+              <div class="filter-btn filter-btn-extras">
+                <span>Freikilometer(1500)</span>
+              </div>
+              <div class="filter-btn filter-btn-extras">
+                <span>Glasschutz</span>
+              </div>
+              <div class="filter-btn filter-btn-extras">
+                <span>Reifenschutz</span>
+              </div>
+              <div class="filter-btn filter-btn-extras">
+                <span>Zweitfahrer</span>
+              </div>
+            </div>
+          </div>
+          <!--##############################-->
+        </div>
+        <div class="sidebar-actions">
+          <button class="submit-filter btn-small">Filter anwenden</button>
+        </div>
       </div>
       <div class="content">
         <lottie-player
@@ -61,7 +162,7 @@
   </body>
   <script>
     const createCarElement = (data) => {
-      return `<div class="car-item">
+      return /*html*/ `<div class="car-item">
           <div class="car-img">
             <img
               src="https://freepngimg.com/thumb/car/3-2-car-free-download-png.png"
@@ -80,6 +181,9 @@
     });
     $(".sidebar-right .sidebar-header").click(function () {
       $(".sidebar-right").toggleClass("sidebar-right-hidden");
+    });
+    $(".filter-btn").click(function (e) {
+      $(this).toggleClass("is-selected");
     });
 
     setTimeout(() => {
