@@ -73,6 +73,7 @@ main {
   border-radius: 1rem;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
+  user-select: none;
 }
 .filter-btn.is-selected {
   color: var(--col-accent);
@@ -88,4 +89,31 @@ main {
   background: var(--bg-second);
   border-radius: 1rem;
   gap: 1rem;
+}
+.car-header {
+  border-bottom: 1px solid var(--bg-third);
+}
+.car-info-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.car-specification {
+  margin-bottom: 1rem;
+}
+.car-specification-header {
+  color: var(--bg-third);
+}
+.car-specification-header i {
+  color: var(--col-accent);
+}
+
+@media (max-width: 1300px) {
+  .car-info-content {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+@media (max-width: 1000px) {
+  .car-item {
+    flex-direction: column;
+  }
 }

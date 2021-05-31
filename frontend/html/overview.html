@@ -146,30 +146,79 @@
           id="loading-animation-lottie"
           src="https://assets10.lottiefiles.com/packages/lf20_QPewua.json"
           background="transparent"
-          speed="1"
+          speed="2"
           style="width: 300px; height: 300px"
           loop
           autoplay
         ></lottie-player>
       </div>
-      <div class="sidebar sidebar-right">
+      <!-- <div class="sidebar sidebar-right">
         <div class="sidebar-header">
           <i class="fas fa-times-circle fa-lg"></i>
           <h3>Filtern</h3>
         </div>
-      </div>
+      </div> -->
     </main>
   </body>
   <script>
     const createCarElement = (data) => {
+      const features = data.features
+        .map((feature) => `<span>${feature}</span>`)
+        .join(" ");
+      const extras = data.extras
+        .map((extra) => `<span>${extra}</span>`)
+        .join(" ");
+
       return /*html*/ `<div class="car-item">
           <div class="car-img">
             <img
-              src="https://freepngimg.com/thumb/car/3-2-car-free-download-png.png"
+              src=${data.imgUrl}
               width="300"
             />
           </div>
-          <div class="car-info">Hier stehen infos zum der karre</div>
+          <div class="car-info">
+            <div class="car-header">
+              <h1 class="car-name">${data.name}</h1>
+            </div>
+            <div class="car-info-content">
+              <div class="car-specification car-type">
+                <h2 class="car-specification-header">
+                  <i class="fas fa-car"></i> Auto-Typ
+                </h2>
+                <span>${data.type}</span>
+              </div>
+              <div class="car-specification doors">
+                <h2 class="car-specification-header">
+                  <i class="fas fa-door-open"></i> Türen
+                </h2>
+                <span>${data.doors}</span>
+              </div>
+              <div class="car-specification car-features">
+                <h2 class="car-specification-header">
+                  <i class="fas fa-star"></i> Zubehör
+                </h2>
+                ${features}
+              </div>
+              <div class="car-specification car-extras">
+                <h2 class="car-specification-header">
+                  <i class="far fa-star"></i> Extras
+                </h2>
+                ${extras}
+              </div>
+              <div class="car-specification car-extras">
+                <h2 class="car-specification-header">
+                  <i class="fas fa-map-marker-alt"></i> Ort
+                </h2>
+                ${data.location}
+              </div>
+              <div class="car-specification car-price">
+                <h2 class="car-specification-header">
+                  <i class="far fa-money-bill-alt"></i> Preis
+                </h2>
+                ${data.price + " €"}
+              </div>
+            </div>
+          </div>
           <div class="car-actions">
             <button>Reservieren</button>
           </div>
@@ -186,11 +235,23 @@
       $(this).toggleClass("is-selected");
     });
 
+    const sampleData = {
+      imgUrl: "https://freepngimg.com/thumb/car/3-2-car-free-download-png.png",
+      name: "BMW I8",
+      manufacturer: "BMW",
+      type: "Oberklasse",
+      doors: "3",
+      features: ["Klimaanlage", "Automatik", "Navigation"],
+      extras: ["Reifenschutz", "Haftpflichtversicherung"],
+      location: "irgendwo im niergendwo",
+      price: 12345.67,
+    };
+
     setTimeout(() => {
       $("#loading-animation-lottie").css("display", "none");
       for (let i = 0; i < 5; i++) {
-        $(".content").append(createCarElement());
+        $(".content").append(createCarElement(sampleData));
       }
-    }, 3000);
+    }, 1500);
   </script>
 </html>
