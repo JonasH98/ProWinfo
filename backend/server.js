@@ -1,6 +1,8 @@
 const express = require("express");
 const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
+const app = express();
+app.use(express.json());
 
 const con = mysql.createConnection({
   host: "localhost",
@@ -13,19 +15,54 @@ con.connect(function (err) {
   console.log("Connected to DB");
 });
 
-const app = express();
-app.use(express.json());
+const fieldsAreEmpty = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    const e = array[i];
+    if (!e || e.length === 0) return true;
+  }
+  return false;
+};
 
 /**
  * AUTHENTICATION
  */
 app.post("/login", (request, response) => {
-  //check requested login info and send message to client
+  const data = request.body;
+  const needed = [data.email, data.password];
+  if (fieldsAreEmpty(needed))
+    return response.json({
+      status: "error",
+      message: "Bitte fülle alle felder aus",
+    });
+  con.query(
+    "SELECT * FROM kunde where Email = ?",
+    [data.email],
+    async (err, result) => {
+      if (err)
+        return response.status(500).send("Fehler beim erstellen des Accounts");
+      if (result.length !== 1)
+        return response.json({
+          status: "error",
+          message: "Kein Account mit der Mail vorhanden",
+        });
+      const pw_correct = await bcrypt.compare(
+        data.password,
+        result[0].Passwort
+      );
+      if (pw_correct)
+        return response.json({
+          status: "success",
+          message: "Login erfolgreich",
+        });
+      return response.json({
+        status: "error",
+        message: "Kombination aus Email und Passwort fehlerhaft",
+      });
+    }
+  );
 });
 app.post("/register", (request, response) => {
-  //register new user with provided information
   const data = request.body;
-  //check, that needed parameters are provided
   const needed = [
     data.lastname,
     data.firstname,
@@ -33,14 +70,12 @@ app.post("/register", (request, response) => {
     data.password,
     data.email,
   ];
-  for (let i = 0; i < needed.length; i++) {
-    const e = needed[i];
-    if (!e || e.length === 0)
-      return response.json({
-        status: "error",
-        message: "Bitte fülle alle felder aus",
-      });
-  }
+  if (fieldsAreEmpty(needed))
+    return response.json({
+      status: "error",
+      message: "Bitte fülle alle felder aus",
+    });
+
   con.query(
     "SELECT * FROM kunde WHERE Email = ?",
     [data.email],
