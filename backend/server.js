@@ -1,4 +1,17 @@
 const express = require("express");
+const mysql = require("mysql2");
+const bcrypt = require("bcrypt");
+
+const con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database: "autovermietung",
+});
+con.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected to DB");
+});
 
 const app = express();
 app.use(express.json());
@@ -11,6 +24,36 @@ app.post("/login", (request, response) => {
 });
 app.post("/register", (request, response) => {
   //register new user with provided information
+  const data = request.body;
+  con.query(
+    "SELECT * FROM kunde WHERE Email = ?",
+    [data.email],
+    async (err, result) => {
+      if (err)
+        return response.status(500).send("Fehler beim erstellen des Accounts");
+
+      if (result.length > 0)
+        return response.json({
+          status: "error",
+          message: "Die Email ist bereits vorhanden",
+        });
+      const pw = await bcrypt.hash(request.body.password, 10);
+      con.query(
+        "INSERT INTO kunde (Nachname,Vorname,Adresse,Passwort,Email) VALUES(?,?,?,?,?)",
+        [data.lastname, data.firstname, data.address, pw, data.email],
+        (err, result) => {
+          if (err)
+            return response
+              .status(500)
+              .send("Fehler beim erstellen des Accounts");
+          return response.json({
+            status: "success",
+            message: "Der Account wurde erfolgreich erstellt",
+          });
+        }
+      );
+    }
+  );
 });
 
 /**
