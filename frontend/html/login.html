@@ -16,7 +16,11 @@
   <body>
     <navbar>
       <div class="nav-group">
-        <h1>LOGO IST HIER</h1>
+        <img
+          src="../images/OneStopLogo_Light.png"
+          alt="LOGO"
+          class="brand-logo"
+        />
       </div>
       <div class="nav-group">
         <h2>Anmeldung und Registrierung</h2>
@@ -29,22 +33,21 @@
       </div>
       <div class="form-wrapper">
         <form id="login-form">
-          <input type="text" name="username" placeholder="Benutzername" />
+          <input type="text" name="email" placeholder="Email" />
           <input type="password" name="password" placeholder="• • • • • •" />
           <button class="submit-form" form-id="login-form">Login</button>
         </form>
         <form id="register-form" class="form-hidden">
-          <input
-            type="text"
-            name="username"
-            placeholder="Benutzername hier eintragen"
-          />
+          <input type="text" name="firstname" placeholder="Vorname" />
+          <input type="text" name="lastname" placeholder="Nachname" />
+          <input type="text" name="address" placeholder="Adresse" />
           <input type="email" name="email" placeholder="Email hier eintragen" />
           <input
             type="email"
             name="email-verify"
             placeholder="Email bestätigen"
           />
+
           <input
             type="password"
             name="password"
@@ -76,12 +79,21 @@
       $(".switcher-btn").removeClass("active");
       $(this).addClass("active");
     });
-    $(".submit-form").click(function (e) {
+    $(".submit-form").click(async function (e) {
       e.preventDefault();
       const form = $(this).attr("form-id");
       let formData = document.getElementById(form);
       formData = new FormData(formData);
-      console.log(Object.fromEntries(formData));
+      formData = Object.fromEntries(formData);
+      let res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      res = await res.json();
+      console.log(res);
     });
     $(".go-back-btn").click(function (e) {
       window.history.back();

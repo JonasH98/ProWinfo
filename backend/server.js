@@ -1,8 +1,14 @@
 const express = require("express");
 const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const con = mysql.createConnection({
   host: "localhost",
@@ -28,6 +34,7 @@ const fieldsAreEmpty = (array) => {
  */
 app.post("/login", (request, response) => {
   const data = request.body;
+  console.log(data);
   const needed = [data.email, data.password];
   if (fieldsAreEmpty(needed))
     return response.json({
