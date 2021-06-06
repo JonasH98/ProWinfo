@@ -25,6 +25,22 @@ app.post("/login", (request, response) => {
 app.post("/register", (request, response) => {
   //register new user with provided information
   const data = request.body;
+  //check, that needed parameters are provided
+  const needed = [
+    data.lastname,
+    data.firstname,
+    data.address,
+    data.password,
+    data.email,
+  ];
+  for (let i = 0; i < needed.length; i++) {
+    const e = needed[i];
+    if (!e || e.length === 0)
+      return response.json({
+        status: "error",
+        message: "Bitte fülle alle felder aus",
+      });
+  }
   con.query(
     "SELECT * FROM kunde WHERE Email = ?",
     [data.email],
@@ -37,7 +53,7 @@ app.post("/register", (request, response) => {
           status: "error",
           message: "Die Email ist bereits vorhanden",
         });
-      const pw = await bcrypt.hash(request.body.password, 10);
+      const pw = await bcrypt.hash(data.password, 10);
       con.query(
         "INSERT INTO kunde (Nachname,Vorname,Adresse,Passwort,Email) VALUES(?,?,?,?,?)",
         [data.lastname, data.firstname, data.address, pw, data.email],
