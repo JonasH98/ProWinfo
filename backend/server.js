@@ -14,7 +14,7 @@ const con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
-  database: "autovermietung",
+  database: "rental_portal",
 });
 con.connect(function (err) {
   if (err) throw err;
@@ -42,7 +42,7 @@ app.post("/login", (request, response) => {
       message: "Bitte fülle alle felder aus",
     });
   con.query(
-    "SELECT * FROM kunde where Email = ?",
+    "SELECT * FROM customer where email = ?",
     [data.email],
     async (err, result) => {
       if (err)
@@ -54,7 +54,7 @@ app.post("/login", (request, response) => {
         });
       const pw_correct = await bcrypt.compare(
         data.password,
-        result[0].Passwort
+        result[0].password
       );
       if (pw_correct)
         return response.json({
@@ -84,7 +84,7 @@ app.post("/register", (request, response) => {
     });
 
   con.query(
-    "SELECT * FROM kunde WHERE Email = ?",
+    "SELECT * FROM customer WHERE email = ?",
     [data.email],
     async (err, result) => {
       if (err)
@@ -97,8 +97,14 @@ app.post("/register", (request, response) => {
         });
       const pw = await bcrypt.hash(data.password, 10);
       con.query(
-        "INSERT INTO kunde (Nachname,Vorname,Adresse,Passwort,Email) VALUES(?,?,?,?,?)",
-        [data.lastname, data.firstname, data.address, pw, data.email],
+        "INSERT INTO customer (full_name,address,password,email,created_at) VALUES(?,?,?,?,?)",
+        [
+          data.lastname + " " + data.firstname,
+          data.address,
+          pw,
+          data.email,
+          Date.now().toString(),
+        ],
         (err, result) => {
           if (err)
             return response
