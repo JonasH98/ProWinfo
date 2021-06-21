@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
+const moment = require("moment");
 const app = express();
 app.use(express.json());
 app.use(
@@ -77,24 +78,29 @@ app.post("/register", (request, response) => {
     data.password,
     data.email,
   ];
-  if (fieldsAreEmpty(needed))
+  if (fieldsAreEmpty(needed)) {
     return response.json({
       status: "error",
       message: "Bitte fülle alle felder aus",
     });
+  }
 
   con.query(
     "SELECT * FROM customer WHERE email = ?",
     [data.email],
     async (err, result) => {
       if (err)
-        return response.status(500).send("Fehler beim erstellen des Accounts");
+        return response.json({
+          status: "error",
+          message: "Fehler beim erstellen des Accounts1" + err,
+        });
 
-      if (result.length > 0)
+      if (result.length > 0) {
         return response.json({
           status: "error",
           message: "Die Email ist bereits vorhanden",
         });
+      }
       const pw = await bcrypt.hash(data.password, 10);
       con.query(
         "INSERT INTO customer (full_name,address,password,email,created_at) VALUES(?,?,?,?,?)",
@@ -103,13 +109,14 @@ app.post("/register", (request, response) => {
           data.address,
           pw,
           data.email,
-          Date.now().toString(),
+          new Date(Date.now()).toISOString().slice(0, 19).replace("T", " "),
         ],
         (err, result) => {
           if (err)
-            return response
-              .status(500)
-              .send("Fehler beim erstellen des Accounts");
+            return response.json({
+              status: "error",
+              message: "Fehler beim erstellen des Accounts2" + err,
+            });
           return response.json({
             status: "success",
             message: "Der Account wurde erfolgreich erstellt",

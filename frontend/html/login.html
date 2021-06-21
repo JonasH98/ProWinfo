@@ -35,7 +35,9 @@
         <form id="login-form">
           <input type="text" name="email" placeholder="Email" />
           <input type="password" name="password" placeholder="• • • • • •" />
-          <button class="submit-form" form-id="login-form">Login</button>
+          <button class="submit-form" form-id="login-form" api-endpoint="login">
+            Login
+          </button>
         </form>
         <form id="register-form" class="form-hidden">
           <input type="text" name="firstname" placeholder="Vorname" />
@@ -58,7 +60,11 @@
             name="password-verify"
             placeholder="Passwort wiederholen"
           />
-          <button class="submit-form" form-id="register-form">
+          <button
+            class="submit-form"
+            form-id="register-form"
+            api-endpoint="register"
+          >
             Registrieren
           </button>
         </form>
@@ -82,10 +88,12 @@
     $(".submit-form").click(async function (e) {
       e.preventDefault();
       const form = $(this).attr("form-id");
+      const apiEndpoint = $(this).attr("api-endpoint");
       let formData = document.getElementById(form);
       formData = new FormData(formData);
       formData = Object.fromEntries(formData);
-      let res = await fetch("http://localhost:3000/login", {
+      console.log(formData);
+      let res = await fetch(`http://localhost:3000/${apiEndpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,6 +101,14 @@
         body: JSON.stringify(formData),
       });
       res = await res.json();
+      if (apiEndpoint === "login" && res.status === "success") {
+        localStorage.setItem("user", formData.email);
+        window.location.href = "index.html";
+      }
+      if (apiEndpoint === "register" && res.status === "success") {
+        $(`.switcher-btn[form-id="login-form"]`).click();
+      }
+
       console.log(res);
     });
     $(".go-back-btn").click(function (e) {
