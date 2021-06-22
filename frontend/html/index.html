@@ -1,63 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/index.css" />
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="../js/login_check.js" defer></script>
-    <title>Autovermietung</title>
-  </head>
-  <body>
-    <navbar>
-      <div class="nav-group">
-        <img
-          src="../images/OneStopLogo_Light.png"
-          alt="LOGO"
-          class="brand-logo"
-        />
-      </div>
-      <div class="nav-group nav-group-authentication">
-        <a href="login.html"><button>Login</button></a>
-        <a href="login.html?tab=register-form"><button>Registrieren</button></a>
-      </div>
-    </navbar>
-    <main>
-      <a>test_T</a>
-      <div>
-        <form class="search-box" method="get" action="overview.html">
-          <input
-            type="text"
-            class="search-rental"
-            placeholder="Hier nach deinem Traumauto suchen und fündig werden..."
-          />
-          <button type="submit">suchen</button>
-        </form>
-      </div>
-      <div class="car-list">
-        <div class="car-item">
-          <div class="car-img"></div>
-          <div class="car-information">heftiges auto</div>
-          <div class="car-actions">
-            <button class="reserve">Reservieren</button>
-          </div>
-        </div>
-        <div class="car-item">
-          <div class="car-img"></div>
-          <div class="car-information">heftiges auto</div>
-          <div class="car-actions">
-            <button class="reserve">Reservieren</button>
-          </div>
-        </div>
-        <div class="car-item">
-          <div class="car-img"></div>
-          <div class="car-information">heftiges auto</div>
-          <div class="car-actions">
-            <button class="reserve">Reservieren</button>
-          </div>
+
+<head>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/index.css" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../js/login_check.js" defer></script>
+  <title>Autovermietung</title>
+</head>
+
+<body>
+  <navbar>
+    <div class="nav-group">
+      <img src="../images/OneStopLogo_Light.png" alt="LOGO" class="brand-logo" />
+    </div>
+    <div class="nav-group nav-group-authentication">
+      <a href="login.html"><button>Login</button></a>
+      <a href="login.html?tab=register-form"><button>Registrieren</button></a>
+    </div>
+  </navbar>
+  <main>
+    <div>
+      <form class="search-box" method="get" action="overview.html">
+        <input type="text" class="search-rental" placeholder="Hier nach deinem Traumauto suchen und fündig werden..." />
+        <button type="submit">suchen</button>
+      </form>
+    </div>
+    <div class="car-list">
+      <div class="car-item">
+        <div class="car-img"></div>
+        <div class="car-information">heftiges auto</div>
+        <div class="car-actions">
+          <a href="reservation.html"><button class="reserve">Reservieren</button></a>
         </div>
       </div>
-    </main>
-  </body>
+      <div class="car-item">
+        <div class="car-img"></div>
+        <div class="car-information">heftiges auto</div>
+        <div class="car-actions">
+          <a href="reservation.html"><button class="reserve">Reservieren</button></a>
+        </div>
+      </div>
+      <div class="car-item">
+        <div class="car-img"></div>
+        <div class="car-information">heftiges auto</div>
+        <div class="car-actions">
+          <a href="reservation.html"><button class="reserve">Reservieren</button></a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
 </html>

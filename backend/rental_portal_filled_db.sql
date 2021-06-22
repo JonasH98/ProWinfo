@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `car_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.car_type: ~8 rows (ungefähr)
+-- Exportiere Daten aus Tabelle rental_portal.car_type: ~7 rows (ungefähr)
 DELETE FROM `car_type`;
 /*!40000 ALTER TABLE `car_type` DISABLE KEYS */;
 INSERT INTO `car_type` (`id`, `seats`, `doors`) VALUES
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `address` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
+  `password` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=latin1;
 

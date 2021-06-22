@@ -1,180 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/overview.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-      crossorigin="anonymous"
-    />
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="../js/login_check.js" defer></script>
-    <title>Autovermietung</title>
-  </head>
-  <body>
-    <navbar>
-      <div class="nav-group">
-        <img
-          src="../images/OneStopLogo_Light.png"
-          alt="LOGO"
-          class="brand-logo"
-        />
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/overview.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../js/login_check.js" defer></script>
+  <title>Autovermietung</title>
+</head>
+
+<body>
+  <navbar>
+    <div class="nav-group">
+      <img src="../images/OneStopLogo_Light.png" alt="LOGO" class="brand-logo" />
+    </div>
+    <div class="nav-group">
+      <h1>Autos</h1>
+    </div>
+    <div class="nav-group nav-group-authentication">
+      <a href="login.html"><button>Login</button></a>
+      <a href="login.html?tab=register-form"><button>Registrieren</button></a>
+    </div>
+  </navbar>
+  <main>
+    <div class="sidebar sidebar-left">
+      <div class="sidebar-header">
+        <h3>Filtern</h3>
+        <i class="fas fa-times-circle fa-lg"></i>
       </div>
-      <div class="nav-group">
-        <h1>Autos</h1>
-      </div>
-      <div class="nav-group nav-group-authentication">
-        <a href="login.html"><button>Login</button></a>
-        <a href="login.html?tab=register-form"><button>Registrieren</button></a>
-      </div>
-    </navbar>
-    <main>
-      <div class="sidebar sidebar-left">
-        <div class="sidebar-header">
-          <h3>Filtern</h3>
-          <i class="fas fa-times-circle fa-lg"></i>
+      <div class="sidebar-content">
+        <!--##############################-->
+        <div class="filter-group filter-group-car-type">
+          <div class="filter-group-header">
+            <h3>Auto-Typ</h3>
+          </div>
+          <div class="filter-group-content">
+            <div class="filter-btn filter-btn-car-type">
+              <i class="fas fa-car"></i>
+              <span>Kleinwagen</span>
+            </div>
+            <div class="filter-btn filter-btn-car-type">
+              <i class="fas fa-car"></i>
+              <span>Kompaktwagen</span>
+            </div>
+            <div class="filter-btn filter-btn-car-type">
+              <i class="fas fa-car"></i>
+              <span>Mittelklasse</span>
+            </div>
+            <div class="filter-btn filter-btn-car-type">
+              <i class="fas fa-car"></i>
+              <span>Oberklasse</span>
+            </div>
+            <div class="filter-btn filter-btn-car-type">
+              <i class="fas fa-car"></i>
+              <span>SUV</span>
+            </div>
+            <div class="filter-btn filter-btn-car-type">
+              <i class="fas fa-car"></i>
+              <span>Kombi</span>
+            </div>
+          </div>
         </div>
-        <div class="sidebar-content">
-          <!--##############################-->
-          <div class="filter-group filter-group-car-type">
-            <div class="filter-group-header">
-              <h3>Auto-Typ</h3>
+        <!--##############################-->
+        <!--##############################-->
+        <div class="filter-group filter-group-doors">
+          <div class="filter-group-header">
+            <h3>Türen</h3>
+          </div>
+          <div class="filter-group-content">
+            <div class="filter-btn filter-btn-doors">
+              <span>2-3</span>
             </div>
-            <div class="filter-group-content">
-              <div class="filter-btn filter-btn-car-type">
-                <i class="fas fa-car"></i>
-                <span>Kleinwagen</span>
-              </div>
-              <div class="filter-btn filter-btn-car-type">
-                <i class="fas fa-car"></i>
-                <span>Kompaktwagen</span>
-              </div>
-              <div class="filter-btn filter-btn-car-type">
-                <i class="fas fa-car"></i>
-                <span>Mittelklasse</span>
-              </div>
-              <div class="filter-btn filter-btn-car-type">
-                <i class="fas fa-car"></i>
-                <span>Oberklasse</span>
-              </div>
-              <div class="filter-btn filter-btn-car-type">
-                <i class="fas fa-car"></i>
-                <span>SUV</span>
-              </div>
-              <div class="filter-btn filter-btn-car-type">
-                <i class="fas fa-car"></i>
-                <span>Kombi</span>
-              </div>
+            <div class="filter-btn filter-btn-doors">
+              <span>4-5</span>
             </div>
           </div>
-          <!--##############################-->
-          <!--##############################-->
-          <div class="filter-group filter-group-doors">
-            <div class="filter-group-header">
-              <h3>Türen</h3>
-            </div>
-            <div class="filter-group-content">
-              <div class="filter-btn filter-btn-doors">
-                <span>2-3</span>
-              </div>
-              <div class="filter-btn filter-btn-doors">
-                <span>4-5</span>
-              </div>
-            </div>
-          </div>
-          <!--##############################-->
-          <!--##############################-->
-          <div class="filter-group filter-group-additions">
-            <div class="filter-group-header">
-              <h3>Zubehör</h3>
-            </div>
-            <div class="filter-group-content">
-              <div class="filter-btn filter-btn-additions">
-                <span>Navigation</span>
-              </div>
-              <div class="filter-btn filter-btn-additions">
-                <span>Klimaanlage</span>
-              </div>
-              <div class="filter-btn filter-btn-additions">
-                <span>Automatik</span>
-              </div>
-              <div class="filter-btn filter-btn-additions">
-                <span>Winterreifen</span>
-              </div>
-            </div>
-          </div>
-          <!--##############################-->
-          <!--##############################-->
-          <div class="filter-group filter-group-extras">
-            <div class="filter-group-header">
-              <h3>Extras</h3>
-            </div>
-            <div class="filter-group-content">
-              <div class="filter-btn filter-btn-extras">
-                <span>Haftpflichtversicherung</span>
-              </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Freikilometer(750)</span>
-              </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Freikilometer(1500)</span>
-              </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Glasschutz</span>
-              </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Reifenschutz</span>
-              </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Zweitfahrer</span>
-              </div>
-            </div>
-          </div>
-          <!--##############################-->
         </div>
-        <div class="sidebar-actions">
-          <button class="submit-filter btn-small">Filter anwenden</button>
+        <!--##############################-->
+        <!--##############################-->
+        <div class="filter-group filter-group-additions">
+          <div class="filter-group-header">
+            <h3>Zubehör</h3>
+          </div>
+          <div class="filter-group-content">
+            <div class="filter-btn filter-btn-additions">
+              <span>Navigation</span>
+            </div>
+            <div class="filter-btn filter-btn-additions">
+              <span>Klimaanlage</span>
+            </div>
+            <div class="filter-btn filter-btn-additions">
+              <span>Automatik</span>
+            </div>
+            <div class="filter-btn filter-btn-additions">
+              <span>Winterreifen</span>
+            </div>
+          </div>
         </div>
+        <!--##############################-->
+        <!--##############################-->
+        <div class="filter-group filter-group-extras">
+          <div class="filter-group-header">
+            <h3>Extras</h3>
+          </div>
+          <div class="filter-group-content">
+            <div class="filter-btn filter-btn-extras">
+              <span>Haftpflichtversicherung</span>
+            </div>
+            <div class="filter-btn filter-btn-extras">
+              <span>Freikilometer(750)</span>
+            </div>
+            <div class="filter-btn filter-btn-extras">
+              <span>Freikilometer(1500)</span>
+            </div>
+            <div class="filter-btn filter-btn-extras">
+              <span>Glasschutz</span>
+            </div>
+            <div class="filter-btn filter-btn-extras">
+              <span>Reifenschutz</span>
+            </div>
+            <div class="filter-btn filter-btn-extras">
+              <span>Zweitfahrer</span>
+            </div>
+          </div>
+        </div>
+        <!--##############################-->
       </div>
-      <div class="content">
-        <lottie-player
-          id="loading-animation-lottie"
-          src="https://assets10.lottiefiles.com/packages/lf20_QPewua.json"
-          background="transparent"
-          speed="2"
-          style="width: 300px; height: 300px"
-          loop
-          autoplay
-        ></lottie-player>
+      <div class="sidebar-actions">
+        <button class="submit-filter btn-small">Filter anwenden</button>
       </div>
-      <!-- <div class="sidebar sidebar-right">
+    </div>
+    <div class="content">
+      <lottie-player id="loading-animation-lottie" src="https://assets10.lottiefiles.com/packages/lf20_QPewua.json"
+        background="transparent" speed="2" style="width: 300px; height: 300px" loop autoplay></lottie-player>
+    </div>
+    <!-- <div class="sidebar sidebar-right">
         <div class="sidebar-header">
           <i class="fas fa-times-circle fa-lg"></i>
           <h3>Filtern</h3>
         </div>
       </div> -->
-    </main>
-  </body>
-  <script>
-    const createCarElement = (data) => {
-      const features = data.features
-        .map((feature) => `<span>${feature}</span>`)
-        .join(" ");
-      const extras = data.extras
-        .map((extra) => `<span>${extra}</span>`)
-        .join(" ");
+  </main>
+</body>
+<script>
+  const createCarElement = (data) => {
+    const features = data.features
+      .map((feature) => `<span>${feature}</span>`)
+      .join(" ");
+    const extras = data.extras
+      .map((extra) => `<span>${extra}</span>`)
+      .join(" ");
 
-      return /*html*/ `<div class="car-item">
+    return /*html*/ `<div class="car-item">
           <div class="car-img">
             <img
               src=${data.imgUrl}
@@ -225,38 +210,39 @@
             </div>
           </div>
           <div class="car-actions">
-            <button>Reservieren</button>
+            <a href="reservation.html"><button>Reservieren</button></a>
           </div>
         </div>`;
-    };
+  };
 
-    $(".sidebar-left .sidebar-header").click(function () {
-      $(".sidebar-left").toggleClass("sidebar-left-hidden");
-    });
-    $(".sidebar-right .sidebar-header").click(function () {
-      $(".sidebar-right").toggleClass("sidebar-right-hidden");
-    });
-    $(".filter-btn").click(function (e) {
-      $(this).toggleClass("is-selected");
-    });
+  $(".sidebar-left .sidebar-header").click(function () {
+    $(".sidebar-left").toggleClass("sidebar-left-hidden");
+  });
+  $(".sidebar-right .sidebar-header").click(function () {
+    $(".sidebar-right").toggleClass("sidebar-right-hidden");
+  });
+  $(".filter-btn").click(function (e) {
+    $(this).toggleClass("is-selected");
+  });
 
-    const sampleData = {
-      imgUrl: "https://freepngimg.com/thumb/car/3-2-car-free-download-png.png",
-      name: "BMW I8",
-      manufacturer: "BMW",
-      type: "Oberklasse",
-      doors: "3",
-      features: ["Klimaanlage", "Automatik", "Navigation"],
-      extras: ["Reifenschutz", "Haftpflichtversicherung"],
-      location: "irgendwo im nirgendwo",
-      price: 12345.67,
-    };
+  const sampleData = {
+    imgUrl: "https://freepngimg.com/thumb/car/3-2-car-free-download-png.png",
+    name: "BMW I8",
+    manufacturer: "BMW",
+    type: "Oberklasse",
+    doors: "3",
+    features: ["Klimaanlage", "Automatik", "Navigation"],
+    extras: ["Reifenschutz", "Haftpflichtversicherung"],
+    location: "irgendwo im nirgendwo",
+    price: 12345.67,
+  };
 
-    setTimeout(() => {
-      $("#loading-animation-lottie").css("display", "none");
-      for (let i = 0; i < 5; i++) {
-        $(".content").append(createCarElement(sampleData));
-      }
-    }, 1500);
-  </script>
+  setTimeout(() => {
+    $("#loading-animation-lottie").css("display", "none");
+    for (let i = 0; i < 5; i++) {
+      $(".content").append(createCarElement(sampleData));
+    }
+  }, 1500);
+</script>
+
 </html>
