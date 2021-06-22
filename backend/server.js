@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
 const moment = require("moment");
@@ -10,17 +10,7 @@ app.use(
     origin: "*",
   })
 );
-
-const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "rental_portal",
-});
-con.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected to DB");
-});
+let con;
 
 const fieldsAreEmpty = (array) => {
   for (let i = 0; i < array.length; i++) {
@@ -33,7 +23,7 @@ const fieldsAreEmpty = (array) => {
 /**
  * AUTHENTICATION
  */
-app.post("/login", (request, response) => {
+app.post("/login", async (request, response) => {
   const data = request.body;
   console.log(data);
   const needed = [data.email, data.password];
@@ -42,34 +32,35 @@ app.post("/login", (request, response) => {
       status: "error",
       message: "Bitte fülle alle felder aus",
     });
-  con.query(
-    "SELECT * FROM customer where email = ?",
-    [data.email],
-    async (err, result) => {
-      if (err)
-        return response.status(500).send("Fehler beim erstellen des Accounts");
-      if (result.length !== 1)
-        return response.json({
-          status: "error",
-          message: "Kein Account mit der Mail vorhanden",
-        });
-      const pw_correct = await bcrypt.compare(
-        data.password,
-        result[0].password
-      );
-      if (pw_correct)
-        return response.json({
-          status: "success",
-          message: "Login erfolgreich",
-        });
+  try {
+    const [rows, fields] = await con.query(
+      "SELECT * FROM customer where email = ?",
+      [data.email]
+    );
+
+    if (rows.length !== 1)
       return response.json({
         status: "error",
-        message: "Kombination aus Email und Passwort fehlerhaft",
+        message: "Kein Account mit der Mail vorhanden",
       });
-    }
-  );
+    const pw_correct = await bcrypt.compare(data.password, rows[0].password);
+    if (pw_correct)
+      return response.json({
+        status: "success",
+        message: "Login erfolgreich",
+      });
+    return response.json({
+      status: "error",
+      message: "Kombination aus Email und Passwort fehlerhaft",
+    });
+  } catch (error) {
+    return response.json({
+      status: "error",
+      message: "Fehler beim einloggen" + error,
+    });
+  }
 });
-app.post("/register", (request, response) => {
+app.post("/register", async (request, response) => {
   const data = request.body;
   const needed = [
     data.lastname,
@@ -84,47 +75,38 @@ app.post("/register", (request, response) => {
       message: "Bitte fülle alle felder aus",
     });
   }
-
-  con.query(
-    "SELECT * FROM customer WHERE email = ?",
-    [data.email],
-    async (err, result) => {
-      if (err)
-        return response.json({
-          status: "error",
-          message: "Fehler beim erstellen des Accounts1" + err,
-        });
-
-      if (result.length > 0) {
-        return response.json({
-          status: "error",
-          message: "Die Email ist bereits vorhanden",
-        });
-      }
-      const pw = await bcrypt.hash(data.password, 10);
-      con.query(
-        "INSERT INTO customer (full_name,address,password,email,created_at) VALUES(?,?,?,?,?)",
-        [
-          data.lastname + " " + data.firstname,
-          data.address,
-          pw,
-          data.email,
-          new Date(Date.now()).toISOString().slice(0, 19).replace("T", " "),
-        ],
-        (err, result) => {
-          if (err)
-            return response.json({
-              status: "error",
-              message: "Fehler beim erstellen des Accounts2" + err,
-            });
-          return response.json({
-            status: "success",
-            message: "Der Account wurde erfolgreich erstellt",
-          });
-        }
-      );
+  try {
+    const [rows, fields] = await con.query(
+      "SELECT * FROM customer WHERE email = ?",
+      [data.email]
+    );
+    if (rows.length > 0) {
+      return response.json({
+        status: "error",
+        message: "Die Email ist bereits vorhanden",
+      });
     }
-  );
+    const pw = await bcrypt.hash(data.password, 10);
+    await con.query(
+      "INSERT INTO customer (full_name,address,password,email,created_at) VALUES(?,?,?,?,?)",
+      [
+        data.lastname + " " + data.firstname,
+        data.address,
+        pw,
+        data.email,
+        new Date(Date.now()).toISOString().slice(0, 19).replace("T", " "),
+      ]
+    );
+    return response.json({
+      status: "success",
+      message: "Der Account wurde erfolgreich erstellt",
+    });
+  } catch (error) {
+    return response.json({
+      status: "error",
+      message: "Fehler beim erstellen des Accounts1" + err,
+    });
+  }
 });
 
 /**
@@ -133,10 +115,73 @@ app.post("/register", (request, response) => {
 app.get("/cars/:id", (request, response) => {
   //fetch car with specific id
 });
-app.get("/cars", (request, response) => {
-  //fetch cars from database and send it to the client
+app.get("/cars", async (request, response) => {
+  const [rows, fields] = await con.query(
+    /*sql */
+    `SELECT car.id,
+      car_type.seats,car_type.doors,car_type.id AS cartypeid,
+      manufacturer.name,
+      rental_station.location
+    FROM car,car_type,manufacturer,rental_station
+    where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`
+  );
+  try {
+    const newCars = await Promise.all(
+      rows.map(async (car) => {
+        const [feat, feat_fields] = await getFeatures(car.cartypeid);
+        const [extr, extr_fields] = await getExtras(car.cartypeid);
+        const [cls, cls_fields] = await getClasses(car.cartypeid);
+        const newC = { ...car, features: feat, extras: extr, classes: cls };
+        return newC;
+      })
+    );
+    return response.json(newCars);
+  } catch (error) {
+    return response.send("error" + error);
+
+    return response.json(rows);
+  }
 });
 
-app.listen(3000, () => {
+const getFeatures = async (typeId) => {
+  return await con.query(
+    /*sql */ `
+    SELECT feature.* 
+    FROM car_type_feature,feature 
+    WHERE feature.id = car_type_feature.feature_id AND car_type_feature.car_type_id = ?
+  `,
+    [typeId]
+  );
+};
+const getClasses = async (typeId) => {
+  return await con.query(
+    /*sql */ `
+    SELECT car_class.* 
+    FROM car_type_class,car_class 
+    WHERE car_class.id = car_type_class.car_class_id AND car_type_class.car_type_id = ?
+  `,
+    [typeId]
+  );
+};
+const getExtras = async (typeId) => {
+  return await con.query(
+    /*sql */ `
+    SELECT extra.* 
+    FROM car_type_extra,extra 
+    WHERE extra.id = car_type_extra.extra_id AND car_type_extra.car_type_id = ?
+  `,
+    [typeId]
+  );
+};
+
+app.listen(3000, async () => {
   console.log(`Server is Listening on 3000`);
+  con = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "rental_portal",
+  });
+  const msg = await con.connect();
+  console.log("Connected to DB1");
 });
