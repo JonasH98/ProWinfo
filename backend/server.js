@@ -112,36 +112,53 @@ app.post("/register", async (request, response) => {
 /**
  * CARS
  */
-app.get("/cars/:id", (request, response) => {
-  //fetch car with specific id
-});
-app.get("/cars", async (request, response) => {
-  const [rows, fields] = await con.query(
-    /*sql */
-    `SELECT car.id,
-      car_type.seats,car_type.doors,car_type.id AS cartypeid,
-      manufacturer.name,
-      rental_station.location
-    FROM car,car_type,manufacturer,rental_station
-    where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`
-  );
+app.get("/cars/:id", async (request, response) => {
   try {
-    const newCars = await Promise.all(
-      rows.map(async (car) => {
-        const [feat, feat_fields] = await getFeatures(car.cartypeid);
-        const [extr, extr_fields] = await getExtras(car.cartypeid);
-        const [cls, cls_fields] = await getClasses(car.cartypeid);
-        const newC = { ...car, features: feat, extras: extr, classes: cls };
-        return newC;
-      })
-    );
-    return response.json(newCars);
+    const cars = await getCars(request.params.id);
+    return response.json(cars);
   } catch (error) {
-    return response.send("error" + error);
-
-    return response.json(rows);
+    return response.json({
+      status: "error",
+      message: "Fehler beim lesen der Autos" + error,
+    });
   }
 });
+app.get("/cars", async (request, response) => {
+  try {
+    const cars = await getCars();
+    return response.json(cars);
+  } catch (error) {
+    return response.json({
+      status: "error",
+      message: "Fehler beim lesen der Autos" + error,
+    });
+  }
+});
+
+const getCars = async (carid) => {
+  let sql =
+    /*sql */
+    `SELECT car.id,
+    car_type.seats,car_type.doors,car_type.id AS cartypeid,
+    manufacturer.name,
+    rental_station.location
+  FROM car,car_type,manufacturer,rental_station
+  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`;
+  if (carid) {
+    sql += ` AND car.id = "${carid}"`;
+  }
+  const [rows, fields] = await con.query(sql);
+  const newCars = await Promise.all(
+    rows.map(async (car) => {
+      const [feat, feat_fields] = await getFeatures(car.cartypeid);
+      const [extr, extr_fields] = await getExtras(car.cartypeid);
+      const [cls, cls_fields] = await getClasses(car.cartypeid);
+      const newC = { ...car, features: feat, extras: extr, classes: cls };
+      return newC;
+    })
+  );
+  return newCars;
+};
 
 const getFeatures = async (typeId) => {
   return await con.query(
