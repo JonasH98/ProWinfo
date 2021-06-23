@@ -96,6 +96,7 @@ main {
 .car-info-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 .car-specification {
   margin-bottom: 1rem;
@@ -115,5 +116,6 @@ main {
 @media (max-width: 1000px) {
   .car-item {
     flex-direction: column;
+    width: 90%;
   }
 }

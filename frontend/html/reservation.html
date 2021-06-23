@@ -1,111 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/reservation.css" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Autovermietung</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <navbar>
-        <div class="nav-group">
-            <img src="../images/OneStopLogo_Light.png" alt="LOGO" class="brand-logo" />
-        </div>
-        <div class="nav-group">
-            <a href="login.html"><button>Login</button></a>
-            <a href="login.html?tab=register-form"><button>Registrieren</button></a>
-        </div>
+      <div class="nav-group">
+        <a href="index.html">
+          <img
+            src="../images/OneStopLogo_Light.png"
+            alt="LOGO"
+            class="brand-logo"
+        /></a>
+      </div>
+      <div class="nav-group">
+        <a href="login.html"><button>Login</button></a>
+        <a href="login.html?tab=register-form"><button>Registrieren</button></a>
+      </div>
     </navbar>
     <main>
-        <div class="car-item">
-            <div class="slideshow-container">
+      <div class="car-item">
+        <div class="slideshow-container">
+          <!-- Full-width images with number and caption text -->
+          <div class="mySlides fade">
+            <img src="../images/bmw1.png" style="width: 100%" />
+          </div>
 
-                <!-- Full-width images with number and caption text -->
-                <div class="mySlides fade">
-                    <img src="../images/bmw1.png" style="width:100%; ">
-                </div>
-
-                <div class="mySlides fade">
-                    <img src="../images/bmw3.png" style="width:90%; margin-left: 10%;">
-                </div>
-                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                <a class="next" onclick="plusSlides(1)">&#10095;</a>
-            </div>
-            <br>
-            <div class="txt">
-                <img src="../images/bmwlogo.png" style="width:15%; float:right;">
-                <h1>BMW i8</h1>
-                Oberklasse
-                <br>
-                <br>
-                <h2><em>129,99€/pro Tag</em></h2>
-
-            </div>
-
-            <div class="action">
-                <details class="custom-select">
-                    <summary class="radios">
-                        <input type="radio" name="item" id="default" title="Abholort..." checked>
-                        <input type="radio" name="item" id="item1" title="Berlin">
-                        <input type="radio" name="item" id="item2" title="Köln">
-                        <input type="radio" name="item" id="item3" title="München">
-                        <input type="radio" name="item" id="item4" title="Hamburg">
-                        <input type="radio" name="item" id="item5" title="Weltstadt Rhede">
-                    </summary>
-                    <ul class="list">
-                        <li>
-                            <label for="item1">Berlin</label>
-                        </li>
-                        <li>
-                            <label for="item2">Köln</label>
-                        </li>
-                        <li>
-                            <label for="item3">München</label>
-                        </li>
-                        <li>
-                            <label for="item4">Hamburg</label>
-                        </li>
-                        <li>
-                            <label for="item5">Weltstadt Rhede</label>
-                        </li>
-                    </ul>
-                </details>
-                <a href="wait.html"><button class="reserve">Reservieren</button></a>
-            </div>
+          <div class="mySlides fade">
+            <img
+              src="../images/bmw3.png"
+              style="width: 90%; margin-left: 10%"
+            />
+          </div>
+          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)">&#10095;</a>
         </div>
+        <br />
+        <div class="txt">
+          <img src="../images/bmwlogo.png" style="width: 15%; float: right" />
+          <h1>BMW i8</h1>
+          Oberklasse
+          <br />
+          <br />
+          <h2><em>129,99€/pro Tag</em></h2>
+        </div>
+
+        <div class="action">
+          <details class="custom-select">
+            <summary class="radios">
+              <input
+                type="radio"
+                name="item"
+                id="default"
+                title="Abholort..."
+                checked
+              />
+              <input type="radio" name="item" id="item1" title="Berlin" />
+              <input type="radio" name="item" id="item2" title="Köln" />
+              <input type="radio" name="item" id="item3" title="München" />
+              <input type="radio" name="item" id="item4" title="Hamburg" />
+              <input
+                type="radio"
+                name="item"
+                id="item5"
+                title="Weltstadt Rhede"
+              />
+            </summary>
+            <ul class="list">
+              <li>
+                <label for="item1">Berlin</label>
+              </li>
+              <li>
+                <label for="item2">Köln</label>
+              </li>
+              <li>
+                <label for="item3">München</label>
+              </li>
+              <li>
+                <label for="item4">Hamburg</label>
+              </li>
+              <li>
+                <label for="item5">Weltstadt Rhede</label>
+              </li>
+            </ul>
+          </details>
+          <a href="wait.html"><button class="reserve">Reservieren</button></a>
+        </div>
+      </div>
     </main>
-</body>
-<script>
+  </body>
+  <script>
     var slideIndex = 1;
     showSlides(slideIndex);
 
     function plusSlides(n) {
-        showSlides(slideIndex += n);
+      showSlides((slideIndex += n));
     }
 
     function currentSlide(n) {
-        showSlides(slideIndex = n);
+      showSlides((slideIndex = n));
     }
 
     function showSlides(n) {
-        var i;
-        var slides = document.getElementsByClassName("mySlides");
-        var dots = document.getElementsByClassName("dot");
-        if (n > slides.length) { slideIndex = 1 }
-        if (n < 1) { slideIndex = slides.length }
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      var dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {
+        slideIndex = 1;
+      }
+      if (n < 1) {
+        slideIndex = slides.length;
+      }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
     }
-</script>
-
+  </script>
 </html>
