@@ -231,7 +231,9 @@
             </div>
           </div>
           <div class="car-actions">
-            <a href="reservation.html"><button>Reservieren</button></a>
+            <a href="reservation.html?car_id=${
+              data.id
+            }"><button>Reservieren</button></a>
           </div>
         </div>`;
     };
@@ -266,6 +268,7 @@
         console.log(car);
         $(".content").append(
           createCarElement({
+            id: car.id,
             imgUrl:
               "https://freepngimg.com/thumb/car/3-2-car-free-download-png.png",
             name: car.name,
