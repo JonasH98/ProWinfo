@@ -143,7 +143,8 @@ const getCars = async (carid) => {
     manufacturer.name,
     rental_station.location
   FROM car,car_type,manufacturer,rental_station
-  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`;
+  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id
+  ORDER BY rental_station.id`;
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }

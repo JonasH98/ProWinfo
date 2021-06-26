@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server Version:               8.0.25 - MySQL Community Server - GPL
--- Server Betriebssystem:        Win64
+-- Server version:               8.0.25 - MySQL Community Server - GPL
+-- Server OS:                    Win64
 -- HeidiSQL Version:             11.2.0.6213
 -- --------------------------------------------------------
 
@@ -12,7 +12,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Exportiere Struktur von Tabelle rental_portal.car
+
+-- Dumping database structure for rental_portal
+CREATE DATABASE IF NOT EXISTS `rental_portal` /*!40100 DEFAULT CHARACTER SET latin1 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `rental_portal`;
+
+-- Dumping structure for table rental_portal.car
 CREATE TABLE IF NOT EXISTS `car` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rental_station_id` int DEFAULT NULL,
@@ -28,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `car` (
   CONSTRAINT `FK_car_car_type` FOREIGN KEY (`car_type_id`) REFERENCES `car_type` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.car: ~24 rows (ungefähr)
+-- Dumping data for table rental_portal.car: ~24 rows (approximately)
 DELETE FROM `car`;
 /*!40000 ALTER TABLE `car` DISABLE KEYS */;
 INSERT INTO `car` (`id`, `rental_station_id`, `car_type_id`, `manufacturer_id`, `image_url`) VALUES
@@ -58,14 +63,14 @@ INSERT INTO `car` (`id`, `rental_station_id`, `car_type_id`, `manufacturer_id`, 
 	(24, 20, 5, 3, NULL);
 /*!40000 ALTER TABLE `car` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.car_class
+-- Dumping structure for table rental_portal.car_class
 CREATE TABLE IF NOT EXISTS `car_class` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.car_class: ~6 rows (ungefähr)
+-- Dumping data for table rental_portal.car_class: ~6 rows (approximately)
 DELETE FROM `car_class`;
 /*!40000 ALTER TABLE `car_class` DISABLE KEYS */;
 INSERT INTO `car_class` (`id`, `name`) VALUES
@@ -77,7 +82,7 @@ INSERT INTO `car_class` (`id`, `name`) VALUES
 	(6, 'Kombi');
 /*!40000 ALTER TABLE `car_class` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.car_type
+-- Dumping structure for table rental_portal.car_type
 CREATE TABLE IF NOT EXISTS `car_type` (
   `id` int NOT NULL AUTO_INCREMENT,
   `seats` varchar(50) DEFAULT NULL,
@@ -85,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `car_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.car_type: ~8 rows (ungefähr)
+-- Dumping data for table rental_portal.car_type: ~8 rows (approximately)
 DELETE FROM `car_type`;
 /*!40000 ALTER TABLE `car_type` DISABLE KEYS */;
 INSERT INTO `car_type` (`id`, `seats`, `doors`) VALUES
@@ -99,7 +104,7 @@ INSERT INTO `car_type` (`id`, `seats`, `doors`) VALUES
 	(8, '8-9', '4-5');
 /*!40000 ALTER TABLE `car_type` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.car_type_class
+-- Dumping structure for table rental_portal.car_type_class
 CREATE TABLE IF NOT EXISTS `car_type_class` (
   `car_type_id` int DEFAULT NULL,
   `car_class_id` int DEFAULT NULL,
@@ -109,21 +114,21 @@ CREATE TABLE IF NOT EXISTS `car_type_class` (
   CONSTRAINT `car_type_class_ibfk_2` FOREIGN KEY (`car_class_id`) REFERENCES `car_class` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.car_type_class: ~8 rows (ungefähr)
+-- Dumping data for table rental_portal.car_type_class: ~8 rows (approximately)
 DELETE FROM `car_type_class`;
 /*!40000 ALTER TABLE `car_type_class` DISABLE KEYS */;
 INSERT INTO `car_type_class` (`car_type_id`, `car_class_id`) VALUES
+	(1, 1),
+	(2, 5),
+	(3, 6),
 	(4, 2),
-	(7, 3),
-	(1, 4),
-	(8, 5),
-	(2, 1),
+	(5, 2),
 	(6, 6),
-	(3, 3),
-	(5, 2);
+	(7, 4),
+	(8, 3);
 /*!40000 ALTER TABLE `car_type_class` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.car_type_extra
+-- Dumping structure for table rental_portal.car_type_extra
 CREATE TABLE IF NOT EXISTS `car_type_extra` (
   `car_type_id` int DEFAULT NULL,
   `extra_id` int DEFAULT NULL,
@@ -133,117 +138,32 @@ CREATE TABLE IF NOT EXISTS `car_type_extra` (
   CONSTRAINT `car_type_extra_ibfk_2` FOREIGN KEY (`extra_id`) REFERENCES `extra` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.car_type_extra: ~104 rows (ungefähr)
+-- Dumping data for table rental_portal.car_type_extra: ~104 rows (approximately)
 DELETE FROM `car_type_extra`;
 /*!40000 ALTER TABLE `car_type_extra` DISABLE KEYS */;
 INSERT INTO `car_type_extra` (`car_type_id`, `extra_id`) VALUES
-	(3, 4),
-	(6, 2),
-	(4, 4),
-	(8, 1),
-	(1, 2),
-	(1, 4),
-	(5, 4),
-	(8, 3),
-	(8, 1),
-	(2, 4),
-	(2, 2),
-	(2, 4),
-	(1, 2),
-	(8, 1),
-	(1, 3),
-	(4, 1),
-	(4, 4),
-	(4, 2),
-	(4, 3),
-	(8, 4),
-	(4, 4),
-	(8, 4),
-	(7, 3),
-	(6, 4),
-	(3, 4),
-	(5, 3),
-	(8, 2),
-	(4, 2),
-	(8, 1),
-	(2, 3),
-	(6, 2),
-	(8, 4),
-	(7, 2),
-	(4, 2),
-	(1, 4),
-	(3, 3),
-	(1, 2),
-	(3, 3),
-	(6, 2),
-	(5, 4),
-	(6, 4),
-	(1, 4),
-	(7, 1),
-	(4, 3),
-	(6, 4),
-	(1, 4),
-	(6, 1),
+	(1, 1),
 	(2, 1),
-	(3, 3),
-	(4, 2),
-	(7, 3),
-	(7, 2),
-	(5, 2),
-	(5, 3),
-	(8, 3),
-	(1, 2),
-	(8, 1),
-	(3, 3),
-	(7, 4),
-	(5, 2),
-	(2, 3),
-	(1, 2),
-	(7, 1),
-	(2, 4),
 	(3, 1),
-	(6, 2),
-	(6, 4),
-	(6, 1),
-	(7, 1),
-	(3, 2),
-	(2, 2),
-	(8, 4),
+	(4, 1),
 	(4, 2),
-	(5, 4),
-	(1, 1),
-	(7, 4),
-	(2, 4),
-	(8, 1),
+	(4, 3),
+	(4, 4),
 	(5, 1),
-	(1, 2),
-	(6, 4),
-	(8, 2),
-	(5, 1),
-	(7, 1),
-	(7, 1),
-	(8, 3),
-	(4, 2),
-	(2, 1),
-	(7, 2),
-	(3, 4),
-	(5, 3),
-	(7, 3),
-	(3, 2),
-	(7, 2),
-	(8, 3),
-	(7, 3),
-	(1, 2),
-	(1, 2),
-	(2, 1),
-	(8, 3),
-	(3, 2),
 	(5, 2),
-	(1, 1),
-	(7, 3);
+	(5, 3),
+	(6, 1),
+	(6, 2),
+	(6, 3),
+	(7, 1),
+	(7, 2),
+	(8, 1),
+	(8, 2),
+	(8, 3),
+	(8, 4);
 /*!40000 ALTER TABLE `car_type_extra` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.car_type_feature
+-- Dumping structure for table rental_portal.car_type_feature
 CREATE TABLE IF NOT EXISTS `car_type_feature` (
   `car_type_id` int DEFAULT NULL,
   `feature_id` int DEFAULT NULL,
@@ -253,117 +173,34 @@ CREATE TABLE IF NOT EXISTS `car_type_feature` (
   CONSTRAINT `car_type_feature_ibfk_2` FOREIGN KEY (`feature_id`) REFERENCES `feature` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.car_type_feature: ~104 rows (ungefähr)
+-- Dumping data for table rental_portal.car_type_feature: ~104 rows (approximately)
 DELETE FROM `car_type_feature`;
 /*!40000 ALTER TABLE `car_type_feature` DISABLE KEYS */;
 INSERT INTO `car_type_feature` (`car_type_id`, `feature_id`) VALUES
-	(8, 2),
 	(1, 1),
-	(2, 4),
-	(3, 3),
+	(1, 2),
 	(2, 1),
-	(3, 3),
-	(3, 2),
-	(5, 2),
-	(7, 2),
-	(2, 4),
-	(6, 1),
-	(4, 4),
-	(3, 4),
-	(6, 2),
-	(8, 2),
-	(4, 2),
-	(6, 4),
-	(8, 1),
-	(6, 1),
-	(5, 3),
-	(3, 3),
-	(2, 3),
-	(6, 2),
-	(6, 4),
-	(5, 4),
-	(5, 4),
-	(7, 2),
-	(7, 1),
-	(7, 4),
-	(3, 2),
-	(5, 1),
-	(5, 2),
-	(1, 4),
-	(5, 1),
-	(3, 2),
-	(2, 3),
-	(3, 3),
-	(7, 1),
-	(5, 1),
 	(3, 1),
-	(4, 1),
-	(6, 4),
-	(1, 2),
-	(7, 3),
-	(8, 2),
-	(8, 4),
-	(2, 3),
-	(1, 3),
 	(3, 2),
-	(8, 1),
-	(4, 4),
-	(6, 2),
-	(8, 4),
-	(1, 2),
-	(6, 3),
-	(1, 3),
-	(4, 4),
 	(4, 1),
-	(5, 2),
-	(8, 1),
-	(1, 2),
-	(6, 3),
-	(6, 4),
-	(4, 3),
-	(6, 2),
-	(7, 3),
-	(4, 4),
-	(8, 3),
-	(1, 4),
-	(1, 4),
-	(2, 3),
-	(7, 3),
-	(2, 3),
-	(3, 3),
-	(6, 3),
-	(4, 3),
-	(5, 2),
-	(8, 3),
-	(7, 1),
-	(8, 2),
-	(6, 1),
-	(3, 2),
-	(2, 1),
-	(6, 2),
-	(3, 4),
-	(5, 1),
-	(8, 3),
-	(5, 2),
-	(6, 3),
-	(6, 4),
-	(8, 4),
-	(7, 2),
-	(6, 3),
-	(4, 4),
-	(2, 4),
-	(2, 2),
-	(2, 1),
-	(6, 4),
-	(4, 4),
-	(7, 3),
-	(3, 3),
 	(4, 2),
-	(4, 1),
-	(5, 1);
+	(4, 3),
+	(5, 1),
+	(5, 2),
+	(5, 3),
+	(5, 4),
+	(6, 1),
+	(6, 2),
+	(6, 3),
+	(7, 1),
+	(7, 2),
+	(7, 3),
+	(7, 4),
+	(8, 1),
+	(8, 2);
 /*!40000 ALTER TABLE `car_type_feature` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.customer
+-- Dumping structure for table rental_portal.customer
 CREATE TABLE IF NOT EXISTS `customer` (
   `id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255) DEFAULT NULL,
@@ -372,9 +209,9 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `created_at` datetime DEFAULT NULL,
   `password` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.customer: ~200 rows (ungefähr)
+-- Dumping data for table rental_portal.customer: ~200 rows (approximately)
 DELETE FROM `customer`;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
 INSERT INTO `customer` (`id`, `full_name`, `address`, `email`, `created_at`, `password`) VALUES
@@ -580,14 +417,14 @@ INSERT INTO `customer` (`id`, `full_name`, `address`, `email`, `created_at`, `pa
 	(200, 'Bianca Ryce', '99 Dwight Circle', 'bryce5j@geocities.com', '2017-03-29 00:58:27', '4uSgVLqplJC');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.extra
+-- Dumping structure for table rental_portal.extra
 CREATE TABLE IF NOT EXISTS `extra` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.extra: ~4 rows (ungefähr)
+-- Dumping data for table rental_portal.extra: ~4 rows (approximately)
 DELETE FROM `extra`;
 /*!40000 ALTER TABLE `extra` DISABLE KEYS */;
 INSERT INTO `extra` (`id`, `name`) VALUES
@@ -597,14 +434,14 @@ INSERT INTO `extra` (`id`, `name`) VALUES
 	(4, 'Glas & Reifenschutz');
 /*!40000 ALTER TABLE `extra` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.feature
+-- Dumping structure for table rental_portal.feature
 CREATE TABLE IF NOT EXISTS `feature` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.feature: ~4 rows (ungefähr)
+-- Dumping data for table rental_portal.feature: ~4 rows (approximately)
 DELETE FROM `feature`;
 /*!40000 ALTER TABLE `feature` DISABLE KEYS */;
 INSERT INTO `feature` (`id`, `name`) VALUES
@@ -614,14 +451,14 @@ INSERT INTO `feature` (`id`, `name`) VALUES
 	(4, 'Winterreifen');
 /*!40000 ALTER TABLE `feature` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.manufacturer
+-- Dumping structure for table rental_portal.manufacturer
 CREATE TABLE IF NOT EXISTS `manufacturer` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.manufacturer: ~4 rows (ungefähr)
+-- Dumping data for table rental_portal.manufacturer: ~4 rows (approximately)
 DELETE FROM `manufacturer`;
 /*!40000 ALTER TABLE `manufacturer` DISABLE KEYS */;
 INSERT INTO `manufacturer` (`id`, `name`) VALUES
@@ -631,7 +468,7 @@ INSERT INTO `manufacturer` (`id`, `name`) VALUES
 	(4, 'VW');
 /*!40000 ALTER TABLE `manufacturer` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.rental
+-- Dumping structure for table rental_portal.rental
 CREATE TABLE IF NOT EXISTS `rental` (
   `id` int NOT NULL AUTO_INCREMENT,
   `reservation_id` int DEFAULT NULL,
@@ -643,7 +480,7 @@ CREATE TABLE IF NOT EXISTS `rental` (
   CONSTRAINT `rental_ibfk_2` FOREIGN KEY (`car_id`) REFERENCES `car` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.rental: ~70 rows (ungefähr)
+-- Dumping data for table rental_portal.rental: ~70 rows (approximately)
 DELETE FROM `rental`;
 /*!40000 ALTER TABLE `rental` DISABLE KEYS */;
 INSERT INTO `rental` (`id`, `reservation_id`, `car_id`) VALUES
@@ -719,14 +556,14 @@ INSERT INTO `rental` (`id`, `reservation_id`, `car_id`) VALUES
 	(70, 36, 14);
 /*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.rental_station
+-- Dumping structure for table rental_portal.rental_station
 CREATE TABLE IF NOT EXISTS `rental_station` (
   `id` int NOT NULL AUTO_INCREMENT,
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.rental_station: ~20 rows (ungefähr)
+-- Dumping data for table rental_portal.rental_station: ~0 rows (approximately)
 DELETE FROM `rental_station`;
 /*!40000 ALTER TABLE `rental_station` DISABLE KEYS */;
 INSERT INTO `rental_station` (`id`, `location`) VALUES
@@ -752,7 +589,7 @@ INSERT INTO `rental_station` (`id`, `location`) VALUES
 	(20, 'Naftalan');
 /*!40000 ALTER TABLE `rental_station` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.reservation
+-- Dumping structure for table rental_portal.reservation
 CREATE TABLE IF NOT EXISTS `reservation` (
   `id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
@@ -767,7 +604,7 @@ CREATE TABLE IF NOT EXISTS `reservation` (
   CONSTRAINT `FK_reservation_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19802 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.reservation: ~100 rows (ungefähr)
+-- Dumping data for table rental_portal.reservation: ~0 rows (approximately)
 DELETE FROM `reservation`;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
 INSERT INTO `reservation` (`id`, `customer_id`, `car_id`, `reserved_at`, `rent_from`, `rent_to`) VALUES
@@ -873,7 +710,7 @@ INSERT INTO `reservation` (`id`, `customer_id`, `car_id`, `reserved_at`, `rent_f
 	(100, 185, 22, '2017-10-26 16:56:28', '2019-02-11 18:59:17', '2020-12-27 11:45:59');
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 
--- Exportiere Struktur von Tabelle rental_portal.take_back_protocol
+-- Dumping structure for table rental_portal.take_back_protocol
 CREATE TABLE IF NOT EXISTS `take_back_protocol` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rental_id` int DEFAULT NULL,
@@ -883,7 +720,7 @@ CREATE TABLE IF NOT EXISTS `take_back_protocol` (
   CONSTRAINT `take_back_protocol_ibfk_1` FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle rental_portal.take_back_protocol: ~30 rows (ungefähr)
+-- Dumping data for table rental_portal.take_back_protocol: ~0 rows (approximately)
 DELETE FROM `take_back_protocol`;
 /*!40000 ALTER TABLE `take_back_protocol` DISABLE KEYS */;
 INSERT INTO `take_back_protocol` (`id`, `rental_id`, `cur_kilometers`) VALUES
