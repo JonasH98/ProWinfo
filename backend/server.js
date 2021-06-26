@@ -123,9 +123,9 @@ app.get("/cars/:id", async (request, response) => {
     });
   }
 });
-app.get("/cars", async (request, response) => {
+app.post("/cars", async (request, response) => {
   try {
-    const cars = await getCars();
+    const cars = await getCars(null, request.body);
     return response.json(cars);
   } catch (error) {
     return response.json({
@@ -135,7 +135,7 @@ app.get("/cars", async (request, response) => {
   }
 });
 
-const getCars = async (carid) => {
+const getCars = async (carid, filters) => {
   let sql =
     /*sql */
     `SELECT car.id,
@@ -148,6 +148,7 @@ const getCars = async (carid) => {
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }
+  console.log(filters);
   const [rows, fields] = await con.query(sql);
   const newCars = await Promise.all(
     rows.map(async (car) => {
@@ -155,10 +156,34 @@ const getCars = async (carid) => {
       const [extr, extr_fields] = await getExtras(car.cartypeid);
       const [cls, cls_fields] = await getClasses(car.cartypeid);
       const newC = { ...car, features: feat, extras: extr, classes: cls };
+
+      let clsFilt = true;
+      let doorsFilt = true;
+      let featureFilt = true;
+      let extrasFilt = true;
+      if (filters) {
+        if (filters.doors.length > 0)
+          doorsFilt = filters.doors.includes(newC.doors);
+        if (filters.classes.length > 0)
+          clsFilt = filters.classes.includes(cls[0].id + "");
+        if (filters.features.length > 0) {
+          for (const ft of feat) {
+            clsFilt = filters.features.includes(ft.id + "");
+            if (clsFilt) break;
+          }
+        }
+        if (filters.extras.length > 0) {
+          for (const ex of extr) {
+            extrasFilt = filters.extras.includes(ex.id + "");
+            if (extrasFilt) break;
+          }
+        }
+      }
+      if (!doorsFilt || !clsFilt || !featureFilt || !extrasFilt) return null;
       return newC;
     })
   );
-  return newCars;
+  return newCars.filter((e) => e !== null);
 };
 
 const getFeatures = async (typeId) => {

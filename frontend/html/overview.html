@@ -53,27 +53,27 @@
               <h3>Auto-Typ</h3>
             </div>
             <div class="filter-group-content">
-              <div class="filter-btn filter-btn-car-type">
+              <div class="filter-btn filter-btn-car-type" db_id="1">
                 <i class="fas fa-car"></i>
                 <span>Kleinwagen</span>
               </div>
-              <div class="filter-btn filter-btn-car-type">
+              <div class="filter-btn filter-btn-car-type" db_id="2">
                 <i class="fas fa-car"></i>
                 <span>Kompaktwagen</span>
               </div>
-              <div class="filter-btn filter-btn-car-type">
+              <div class="filter-btn filter-btn-car-type" db_id="3">
                 <i class="fas fa-car"></i>
                 <span>Mittelklasse</span>
               </div>
-              <div class="filter-btn filter-btn-car-type">
+              <div class="filter-btn filter-btn-car-type" db_id="4">
                 <i class="fas fa-car"></i>
                 <span>Oberklasse</span>
               </div>
-              <div class="filter-btn filter-btn-car-type">
+              <div class="filter-btn filter-btn-car-type" db_id="5">
                 <i class="fas fa-car"></i>
                 <span>SUV</span>
               </div>
-              <div class="filter-btn filter-btn-car-type">
+              <div class="filter-btn filter-btn-car-type" db_id="6">
                 <i class="fas fa-car"></i>
                 <span>Kombi</span>
               </div>
@@ -86,31 +86,31 @@
               <h3>Türen</h3>
             </div>
             <div class="filter-group-content">
-              <div class="filter-btn filter-btn-doors">
+              <div class="filter-btn filter-btn-doors" db_id="2-3">
                 <span>2-3</span>
               </div>
-              <div class="filter-btn filter-btn-doors">
-                <span>4-5</span>
+              <div class="filter-btn filter-btn-doors" db_id="4-5">
+                <span>4-5 </span>
               </div>
             </div>
           </div>
           <!--##############################-->
           <!--##############################-->
-          <div class="filter-group filter-group-additions">
+          <div class="filter-group filter-group-features">
             <div class="filter-group-header">
               <h3>Zubehör</h3>
             </div>
             <div class="filter-group-content">
-              <div class="filter-btn filter-btn-additions">
+              <div class="filter-btn filter-btn-features" db_id="1">
                 <span>Navigation</span>
               </div>
-              <div class="filter-btn filter-btn-additions">
+              <div class="filter-btn filter-btn-features" db_id="2">
                 <span>Klimaanlage</span>
               </div>
-              <div class="filter-btn filter-btn-additions">
+              <div class="filter-btn filter-btn-features" db_id="3">
                 <span>Automatik</span>
               </div>
-              <div class="filter-btn filter-btn-additions">
+              <div class="filter-btn filter-btn-features" db_id="4">
                 <span>Winterreifen</span>
               </div>
             </div>
@@ -122,23 +122,17 @@
               <h3>Extras</h3>
             </div>
             <div class="filter-group-content">
-              <div class="filter-btn filter-btn-extras">
+              <div class="filter-btn filter-btn-extras" db_id="1">
                 <span>Haftpflichtversicherung</span>
               </div>
-              <div class="filter-btn filter-btn-extras">
+              <div class="filter-btn filter-btn-extras" db_id="2">
                 <span>Freikilometer(750)</span>
               </div>
-              <div class="filter-btn filter-btn-extras">
+              <div class="filter-btn filter-btn-extras" db_id="3">
                 <span>Freikilometer(1500)</span>
               </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Glasschutz</span>
-              </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Reifenschutz</span>
-              </div>
-              <div class="filter-btn filter-btn-extras">
-                <span>Zweitfahrer</span>
+              <div class="filter-btn filter-btn-extras" db_id="4">
+                <span>Glasschutz & Reifenschutz</span>
               </div>
             </div>
           </div>
@@ -260,12 +254,37 @@
       price: 12345.67,
     };
 
+    const getFilters = () => {
+      const getIds = (selector) => {
+        let ids = [];
+        $(selector).each((idx, ele) => ids.push(ele.getAttribute("db_id")));
+        return ids;
+      };
+      const cls = getIds(".filter-btn-car-type.is-selected");
+      const doors = getIds(".filter-btn-doors.is-selected");
+      const features = getIds(".filter-btn-features.is-selected");
+      const extras = getIds(".filter-btn-extras.is-selected");
+      return {
+        classes: cls,
+        doors: doors,
+        features: features,
+        extras: extras,
+      };
+    };
     const loadData = async () => {
-      let data = await fetch("http://localhost:3000/cars");
+      $(".content").html("");
+      const filters = getFilters();
+      let data = await fetch("http://localhost:3000/cars", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(filters),
+      });
       data = await data.json();
+      console.log(data);
       $("#loading-animation-lottie").css("display", "none");
       for (const car of data) {
-        console.log(car);
         $(".content").append(
           createCarElement({
             id: car.id,
@@ -284,6 +303,12 @@
         );
       }
     };
+
+    $(".submit-filter").click(async function (e) {
+      $("#loading-animation-lottie").css("display", "block");
+      await loadData();
+    });
+
     loadData();
   </script>
 </html>

@@ -34,32 +34,31 @@ CREATE TABLE IF NOT EXISTS `car` (
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.car: ~24 rows (approximately)
-DELETE FROM `car`;
 /*!40000 ALTER TABLE `car` DISABLE KEYS */;
-INSERT INTO `car` (`id`, `rental_station_id`, `car_type_id`, `manufacturer_id`, `image_url`) VALUES
+REPLACE INTO `car` (`id`, `rental_station_id`, `car_type_id`, `manufacturer_id`, `image_url`) VALUES
 	(1, 14, 1, 3, NULL),
 	(2, 15, 1, 1, NULL),
-	(3, 8, 1, 2, NULL),
+	(3, 8, 7, 2, NULL),
 	(4, 18, 1, 4, NULL),
 	(5, 14, 6, 4, NULL),
-	(6, 13, 6, 2, NULL),
+	(6, 13, 8, 2, NULL),
 	(7, 3, 6, 1, NULL),
-	(8, 2, 6, 3, NULL),
+	(8, 2, 8, 3, NULL),
 	(9, 19, 2, 4, NULL),
 	(10, 9, 2, 2, NULL),
 	(11, 6, 2, 1, NULL),
-	(12, 12, 2, 3, NULL),
+	(12, 12, 7, 3, NULL),
 	(13, 5, 3, 4, NULL),
 	(14, 3, 3, 2, NULL),
 	(15, 6, 3, 1, NULL),
-	(16, 14, 3, 3, NULL),
+	(16, 14, 7, 3, NULL),
 	(17, 16, 4, 4, NULL),
 	(18, 1, 4, 2, NULL),
 	(19, 8, 4, 1, NULL),
-	(20, 17, 4, 3, NULL),
+	(20, 17, 6, 3, NULL),
 	(21, 18, 5, 4, NULL),
-	(22, 1, 5, 2, NULL),
-	(23, 15, 5, 1, NULL),
+	(22, 1, 4, 2, NULL),
+	(23, 15, 6, 1, NULL),
 	(24, 20, 5, 3, NULL);
 /*!40000 ALTER TABLE `car` ENABLE KEYS */;
 
@@ -71,9 +70,8 @@ CREATE TABLE IF NOT EXISTS `car_class` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.car_class: ~6 rows (approximately)
-DELETE FROM `car_class`;
 /*!40000 ALTER TABLE `car_class` DISABLE KEYS */;
-INSERT INTO `car_class` (`id`, `name`) VALUES
+REPLACE INTO `car_class` (`id`, `name`) VALUES
 	(1, 'Kleinwagen'),
 	(2, 'Kompaktklasse'),
 	(3, 'Mittelklasse'),
@@ -91,9 +89,8 @@ CREATE TABLE IF NOT EXISTS `car_type` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.car_type: ~8 rows (approximately)
-DELETE FROM `car_type`;
 /*!40000 ALTER TABLE `car_type` DISABLE KEYS */;
-INSERT INTO `car_type` (`id`, `seats`, `doors`) VALUES
+REPLACE INTO `car_type` (`id`, `seats`, `doors`) VALUES
 	(1, '2-3', '2-3'),
 	(2, '4-5', '2-3'),
 	(3, '6-7', '2-3'),
@@ -115,9 +112,8 @@ CREATE TABLE IF NOT EXISTS `car_type_class` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.car_type_class: ~8 rows (approximately)
-DELETE FROM `car_type_class`;
 /*!40000 ALTER TABLE `car_type_class` DISABLE KEYS */;
-INSERT INTO `car_type_class` (`car_type_id`, `car_class_id`) VALUES
+REPLACE INTO `car_type_class` (`car_type_id`, `car_class_id`) VALUES
 	(1, 1),
 	(2, 5),
 	(3, 6),
@@ -138,10 +134,9 @@ CREATE TABLE IF NOT EXISTS `car_type_extra` (
   CONSTRAINT `car_type_extra_ibfk_2` FOREIGN KEY (`extra_id`) REFERENCES `extra` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table rental_portal.car_type_extra: ~104 rows (approximately)
-DELETE FROM `car_type_extra`;
+-- Dumping data for table rental_portal.car_type_extra: ~19 rows (approximately)
 /*!40000 ALTER TABLE `car_type_extra` DISABLE KEYS */;
-INSERT INTO `car_type_extra` (`car_type_id`, `extra_id`) VALUES
+REPLACE INTO `car_type_extra` (`car_type_id`, `extra_id`) VALUES
 	(1, 1),
 	(2, 1),
 	(3, 1),
@@ -173,10 +168,9 @@ CREATE TABLE IF NOT EXISTS `car_type_feature` (
   CONSTRAINT `car_type_feature_ibfk_2` FOREIGN KEY (`feature_id`) REFERENCES `feature` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table rental_portal.car_type_feature: ~104 rows (approximately)
-DELETE FROM `car_type_feature`;
+-- Dumping data for table rental_portal.car_type_feature: ~21 rows (approximately)
 /*!40000 ALTER TABLE `car_type_feature` DISABLE KEYS */;
-INSERT INTO `car_type_feature` (`car_type_id`, `feature_id`) VALUES
+REPLACE INTO `car_type_feature` (`car_type_id`, `feature_id`) VALUES
 	(1, 1),
 	(1, 2),
 	(2, 1),
@@ -212,9 +206,8 @@ CREATE TABLE IF NOT EXISTS `customer` (
 ) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.customer: ~200 rows (approximately)
-DELETE FROM `customer`;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` (`id`, `full_name`, `address`, `email`, `created_at`, `password`) VALUES
+REPLACE INTO `customer` (`id`, `full_name`, `address`, `email`, `created_at`, `password`) VALUES
 	(1, 'Aharon Brandts', '4090 Utah Hill', 'abrandts0@baidu.com', '2020-08-09 12:33:06', '7Cwasv'),
 	(2, 'Rory Chavez', '370 Lotheville Street', 'rchavez1@wufoo.com', '2020-02-22 15:57:29', 'VOnPE0uCeG'),
 	(3, 'Marcello Mateuszczyk', '3 Cordelia Alley', 'mmateuszczyk2@alibaba.com', '2017-03-19 10:13:52', 'LtJCY8jL'),
@@ -425,9 +418,8 @@ CREATE TABLE IF NOT EXISTS `extra` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.extra: ~4 rows (approximately)
-DELETE FROM `extra`;
 /*!40000 ALTER TABLE `extra` DISABLE KEYS */;
-INSERT INTO `extra` (`id`, `name`) VALUES
+REPLACE INTO `extra` (`id`, `name`) VALUES
 	(1, 'Haftpflichtversicherung'),
 	(2, 'Freikilometer 750'),
 	(3, 'Freikilometer 1500'),
@@ -442,9 +434,8 @@ CREATE TABLE IF NOT EXISTS `feature` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.feature: ~4 rows (approximately)
-DELETE FROM `feature`;
 /*!40000 ALTER TABLE `feature` DISABLE KEYS */;
-INSERT INTO `feature` (`id`, `name`) VALUES
+REPLACE INTO `feature` (`id`, `name`) VALUES
 	(1, 'Navigation'),
 	(2, 'Klimaanlage'),
 	(3, 'Automatik'),
@@ -459,9 +450,8 @@ CREATE TABLE IF NOT EXISTS `manufacturer` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.manufacturer: ~4 rows (approximately)
-DELETE FROM `manufacturer`;
 /*!40000 ALTER TABLE `manufacturer` DISABLE KEYS */;
-INSERT INTO `manufacturer` (`id`, `name`) VALUES
+REPLACE INTO `manufacturer` (`id`, `name`) VALUES
 	(1, 'BMW'),
 	(2, 'Ford'),
 	(3, 'Audi'),
@@ -481,9 +471,8 @@ CREATE TABLE IF NOT EXISTS `rental` (
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table rental_portal.rental: ~70 rows (approximately)
-DELETE FROM `rental`;
 /*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO `rental` (`id`, `reservation_id`, `car_id`) VALUES
+REPLACE INTO `rental` (`id`, `reservation_id`, `car_id`) VALUES
 	(1, 88, 8),
 	(2, 80, 20),
 	(3, 77, 19),
@@ -563,10 +552,9 @@ CREATE TABLE IF NOT EXISTS `rental_station` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
--- Dumping data for table rental_portal.rental_station: ~0 rows (approximately)
-DELETE FROM `rental_station`;
+-- Dumping data for table rental_portal.rental_station: ~20 rows (approximately)
 /*!40000 ALTER TABLE `rental_station` DISABLE KEYS */;
-INSERT INTO `rental_station` (`id`, `location`) VALUES
+REPLACE INTO `rental_station` (`id`, `location`) VALUES
 	(1, 'Angochi'),
 	(2, 'Paprotnia'),
 	(3, 'Mangge'),
@@ -604,10 +592,9 @@ CREATE TABLE IF NOT EXISTS `reservation` (
   CONSTRAINT `FK_reservation_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19802 DEFAULT CHARSET=latin1;
 
--- Dumping data for table rental_portal.reservation: ~0 rows (approximately)
-DELETE FROM `reservation`;
+-- Dumping data for table rental_portal.reservation: ~100 rows (approximately)
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
-INSERT INTO `reservation` (`id`, `customer_id`, `car_id`, `reserved_at`, `rent_from`, `rent_to`) VALUES
+REPLACE INTO `reservation` (`id`, `customer_id`, `car_id`, `reserved_at`, `rent_from`, `rent_to`) VALUES
 	(1, 83, 15, '2017-08-23 15:41:01', '2019-09-26 00:44:17', '2020-08-31 05:12:46'),
 	(2, 38, 7, '2018-03-14 21:10:55', '2019-07-11 09:28:36', '2021-12-21 00:25:00'),
 	(3, 91, 11, '2018-05-25 23:52:59', '2019-09-12 00:19:57', '2020-10-24 08:38:15'),
@@ -720,10 +707,9 @@ CREATE TABLE IF NOT EXISTS `take_back_protocol` (
   CONSTRAINT `take_back_protocol_ibfk_1` FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
--- Dumping data for table rental_portal.take_back_protocol: ~0 rows (approximately)
-DELETE FROM `take_back_protocol`;
+-- Dumping data for table rental_portal.take_back_protocol: ~30 rows (approximately)
 /*!40000 ALTER TABLE `take_back_protocol` DISABLE KEYS */;
-INSERT INTO `take_back_protocol` (`id`, `rental_id`, `cur_kilometers`) VALUES
+REPLACE INTO `take_back_protocol` (`id`, `rental_id`, `cur_kilometers`) VALUES
 	(1, 68, 193444),
 	(2, 51, 15043),
 	(3, 48, 148730),
