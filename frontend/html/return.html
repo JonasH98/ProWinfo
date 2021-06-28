@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/return.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autovermietung</title>
+</head>
+<!-- jQuery library -->
+<script src="js/jquery.min.js"></script>
+
+<!-- jsPDF library -->
+<script src="js/jsPDF/dist/jspdf.min.js"></script>
+<script>
+    function generatePDF() {
+        var doc = new jsPDF();
+
+        doc.text(20, 20, 'Hello world!');
+        doc.text(20, 30, 'This is client-side Javascript to generate a PDF.');
+
+        // Add new page
+        doc.addPage();
+        doc.text(20, 20, 'Visit CodexWorld.com');
+
+        // Save the PDF
+        doc.save('document.pdf');
+    }
+</script>
+
+<body>
+    <navbar>
+        <div class="nav-group">
+            <a href="index.html">
+                <img src="../images/OneStopLogo_Light.png" alt="LOGO" class="brand-logo" /></a>
+        </div>
+        <div class="nav-group">
+            <a href="login.html"><button>Login</button></a>
+            <a href="login.html?tab=register-form"><button>Registrieren</button></a>
+        </div>
+    </navbar>
+    <main>
+        <div class="car-item">
+            <h1>Mitarbeiter: XY</h1>
+            <h1>Rücknahmeprotokoll</h1>
+            <label for="id">AutoID:</label>
+            <input type="number" id="id" name="id" min="1" max="200">
+            <label for="start">Mietbegin:</label>
+            <input type="date" id="start" name="start" value="2021-06-28" min="2021-01-01" max="2022-12-31">
+            <label for="return">Rückgabe:</label>
+            <input type="date" id="return" name="return" value="2021-06-28" min="2021-01-01" max="2022-12-31">
+            <label for="Kilometerstand">Neuer Kilometerstand:</label>
+            <input type="number" id="Kilometerstand" name="id" min="1" max="1000000">
+            <button onclick="generatePDF();">PDF erzeugen</button>
+        </div>
+    </main>
+</body>
+
+</html>

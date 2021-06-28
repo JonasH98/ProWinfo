@@ -1,0 +1,17 @@
+.car-item {
+     padding: 10px;
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+     border-radius: 1rem;
+     transition: transform 0.3s ease;
+     background-color: black;
+     width: 400px;
+     margin-left: 38%;
+     margin-top: 5%;
+}
+
+label{
+    color:white;
+}
+
