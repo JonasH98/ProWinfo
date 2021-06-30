@@ -17,13 +17,14 @@
 CREATE DATABASE IF NOT EXISTS `rental_portal` /*!40100 DEFAULT CHARACTER SET latin1 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `rental_portal`;
 
--- Dumping structure for table rental_portal.car
+-- Dumping structure for table rental_portal.car 
 CREATE TABLE IF NOT EXISTS `car` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rental_station_id` int DEFAULT NULL,
   `car_type_id` int DEFAULT NULL,
   `manufacturer_id` int DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
+  `car_price` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `rental_station_id` (`rental_station_id`),
   KEY `manufacturer_id` (`manufacturer_id`),
@@ -35,31 +36,31 @@ CREATE TABLE IF NOT EXISTS `car` (
 
 -- Dumping data for table rental_portal.car: ~24 rows (approximately)
 /*!40000 ALTER TABLE `car` DISABLE KEYS */;
-REPLACE INTO `car` (`id`, `rental_station_id`, `car_type_id`, `manufacturer_id`, `image_url`) VALUES
-	(1, 14, 1, 3, NULL),
-	(2, 15, 1, 1, NULL),
-	(3, 8, 7, 2, NULL),
-	(4, 18, 1, 4, NULL),
-	(5, 14, 6, 4, NULL),
-	(6, 13, 8, 2, NULL),
-	(7, 3, 6, 1, NULL),
-	(8, 2, 8, 3, NULL),
-	(9, 19, 2, 4, NULL),
-	(10, 9, 2, 2, NULL),
-	(11, 6, 2, 1, NULL),
-	(12, 12, 7, 3, NULL),
-	(13, 5, 3, 4, NULL),
-	(14, 3, 3, 2, NULL),
-	(15, 6, 3, 1, NULL),
-	(16, 14, 7, 3, NULL),
-	(17, 16, 4, 4, NULL),
-	(18, 1, 4, 2, NULL),
-	(19, 8, 4, 1, NULL),
-	(20, 17, 6, 3, NULL),
-	(21, 18, 5, 4, NULL),
-	(22, 1, 4, 2, NULL),
-	(23, 15, 6, 1, NULL),
-	(24, 20, 5, 3, NULL);
+REPLACE INTO `car` (`id`, `rental_station_id`, `car_type_id`, `manufacturer_id`, `image_url`, `car_price`) VALUES
+	(1, 14, 1, 3, NULL, 129.99),
+	(2, 15, 1, 1, NULL, 120.00),
+	(3, 8, 7, 2, NULL, 80.99),
+	(4, 18, 1, 4, NULL, 75.99),
+	(5, 14, 6, 4, NULL, 222.99),
+	(6, 13, 8, 2, NULL, 123.99),
+	(7, 3, 6, 1, NULL, 129.99),
+	(8, 2, 8, 3, NULL, 119.99),
+	(9, 19, 2, 4, NULL, 111.99),
+	(10, 9, 2, 2, NULL, 99.99),
+	(11, 6, 2, 1, NULL, 95.99),
+	(12, 12, 7, 3, NULL, 55.99),
+	(13, 5, 3, 4, NULL, 64.99),
+	(14, 3, 3, 2, NULL, 77.99),
+	(15, 6, 3, 1, NULL, 120.99),
+	(16, 14, 7, 3, NULL, 53.99),
+	(17, 16, 4, 4, NULL, 99.99),
+	(18, 1, 4, 2, NULL, 145.99),
+	(19, 8, 4, 1, NULL, 177.99),
+	(20, 17, 6, 3, NULL, 164.99),
+	(21, 18, 5, 4, NULL, 134.99),
+	(22, 1, 4, 2, NULL, 132.99),
+	(23, 15, 6, 1, NULL, 91.99),
+	(24, 20, 5, 3, NULL, 72.99);
 /*!40000 ALTER TABLE `car` ENABLE KEYS */;
 
 -- Dumping structure for table rental_portal.car_class

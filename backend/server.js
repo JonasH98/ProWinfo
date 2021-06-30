@@ -109,6 +109,10 @@ app.post("/register", async (request, response) => {
   }
 });
 
+app.get("/reservation", async(request, response) => {
+  response.send("hallo");
+})
+
 /**
  * CARS
  */
@@ -143,11 +147,12 @@ const getCars = async (carid, filters) => {
     manufacturer.name,
     rental_station.location
   FROM car,car_type,manufacturer,rental_station
-  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id
-  ORDER BY rental_station.id`;
+  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`;
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }
+  sql+="ORDER BY rental_station.id";
+
   console.log(filters);
   const [rows, fields] = await con.query(sql);
   const newCars = await Promise.all(
@@ -222,8 +227,8 @@ app.listen(3000, async () => {
   con = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
-    database: "rental_portal",
+    password: "123",
+    database: "rental_portal", 
   });
   const msg = await con.connect();
   console.log("Connected to DB1");
