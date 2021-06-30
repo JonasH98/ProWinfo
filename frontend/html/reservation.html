@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+  ></script>
     <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/reservation.css" />
     <meta charset="UTF-8" />
@@ -25,83 +30,11 @@
       </div>
     </navbar>
     <main>
-      <div class="car-item">
-        <div class="slideshow-container">
-          <!-- Full-width images with number and caption text -->
-          <div class="mySlides fade">
-            <img src="../images/bmw1.png" style="width: 100%" />
-          </div>
-
-          <div class="mySlides fade">
-            <img
-              src="../images/bmw3.png"
-              style="width: 90%; margin-left: 10%"
-            />
-          </div>
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a>
-        </div>
-        <br />
-        <div class="txt">
-          <img src="../images/bmwlogo.png" style="width: 15%; float: right" />
-          <h1>BMW i8</h1>
-          Oberklasse
-          <br />
-          <br />
-          <h2><em>129,99€/pro Tag</em></h2>
-        </div>
-
-        <div class="action">
-          <details class="custom-select">
-            <summary class="radios">
-              <input
-                type="radio"
-                name="item"
-                id="default"
-                title="Abholort..."
-                checked
-              />
-              <input type="radio" name="item" id="item1" title="Berlin" />
-              <input type="radio" name="item" id="item2" title="Köln" />
-              <input type="radio" name="item" id="item3" title="München" />
-              <input type="radio" name="item" id="item4" title="Hamburg" />
-              <input
-                type="radio"
-                name="item"
-                id="item5"
-                title="Weltstadt Rhede"
-              />
-            </summary>
-            <ul class="list">
-              <li>
-                <label for="item1">Berlin</label>
-              </li>
-              <li>
-                <label for="item2">Köln</label>
-              </li>
-              <li>
-                <label for="item3">München</label>
-              </li>
-              <li>
-                <label for="item4">Hamburg</label>
-              </li>
-              <li>
-                <label for="item5">Weltstadt Rhede</label>
-              </li>
-            </ul>
-          </details>
-          <a href="wait.html"><button class="reserve">Reservieren</button></a>
-        </div>
-      </div>
     </main>
   </body>
   <script>
-    let searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.has("car_id")) {
-      const car_id = searchParams.get("car_id");
-    }
-
-    const 
+    const createReservationCar = (data) => {
+    
     return /*html*/ `
     <div class="car-item">
         <div class="slideshow-container">
@@ -122,58 +55,34 @@
         <br />
         <div class="txt">
           <img src="../images/bmwlogo.png" style="width: 15%; float: right" />
-          <h1>BMW i8</h1>
-          Oberklasse
+          <h1>${data.name}</h1>
+          ${data.classes[0].name}
           <br />
           <br />
-          <h2><em>129,99€/pro Tag</em></h2>
+          <h2><em>${data.car_price}/pro Tag</em></h2>
         </div>
 
         <div class="action">
-          <details class="custom-select">
-            <summary class="radios">
-              <input
-                type="radio"
-                name="item"
-                id="default"
-                title="Abholort..."
-                checked
-              />
-              <input type="radio" name="item" id="item1" title="Berlin" />
-              <input type="radio" name="item" id="item2" title="Köln" />
-              <input type="radio" name="item" id="item3" title="München" />
-              <input type="radio" name="item" id="item4" title="Hamburg" />
-              <input
-                type="radio"
-                name="item"
-                id="item5"
-                title="Weltstadt Rhede"
-              />
-            </summary>
-            <ul class="list">
-              <li>
-                <label for="item1">Berlin</label>
-              </li>
-              <li>
-                <label for="item2">Köln</label>
-              </li>
-              <li>
-                <label for="item3">München</label>
-              </li>
-              <li>
-                <label for="item4">Hamburg</label>
-              </li>
-              <li>
-                <label for="item5">Weltstadt Rhede</label>
-              </li>
-            </ul>
-          </details>
+          <span>Abholort: ${data.location}</span>
           <a href="wait.html"><button class="reserve">Reservieren</button></a>
         </div>
       </div>`
-
+    }
     var slideIndex = 1;
-    showSlides(slideIndex);
+    const loadData = async() => {
+      let searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.has("car_id")) {
+        const car_id = searchParams.get("car_id");
+        let data = await fetch(`http://localhost:3000/cars/${car_id}`);
+        data = await data.json();
+        console.log(data);
+        $('main').append(createReservationCar(data[0]));
+
+        showSlides(slideIndex);
+      }   
+    }
+    
+    loadData();
 
     function plusSlides(n) {
       showSlides((slideIndex += n));

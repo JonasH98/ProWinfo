@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `car` (
 /*!40000 ALTER TABLE `car` DISABLE KEYS */;
 REPLACE INTO `car` (`id`, `rental_station_id`, `car_type_id`, `manufacturer_id`, `image_url`, `car_price`) VALUES
 	(1, 14, 1, 3, NULL, 129.99),
-	(2, 15, 1, 1, NULL, 120.00),
+	(2, 15, 1, 1, NULL, 120.99),
 	(3, 8, 7, 2, NULL, 80.99),
 	(4, 18, 1, 4, NULL, 75.99),
 	(5, 14, 6, 4, NULL, 222.99),

@@ -110,7 +110,7 @@ app.post("/register", async (request, response) => {
 });
 
 app.get("/reservation", async(request, response) => {
-  response.send("hallo");
+  
 })
 
 /**
@@ -145,7 +145,7 @@ const getCars = async (carid, filters) => {
     `SELECT car.id,
     car_type.seats,car_type.doors,car_type.id AS cartypeid,
     manufacturer.name,
-    rental_station.location
+    rental_station.location, car_price
   FROM car,car_type,manufacturer,rental_station
   where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`;
   if (carid) {
