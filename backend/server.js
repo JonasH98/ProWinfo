@@ -151,7 +151,7 @@ const getCars = async (carid, filters) => {
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }
-  sql+="ORDER BY rental_station.id";
+  sql+=" ORDER BY rental_station.id";
 
   console.log(filters);
   const [rows, fields] = await con.query(sql);
@@ -167,17 +167,17 @@ const getCars = async (carid, filters) => {
       let featureFilt = true;
       let extrasFilt = true;
       if (filters) {
-        if (filters.doors.length > 0)
+        if (filters.doors && filters.doors.length > 0)
           doorsFilt = filters.doors.includes(newC.doors);
-        if (filters.classes.length > 0)
+        if (filters.classes && filters.classes.length > 0)
           clsFilt = filters.classes.includes(cls[0].id + "");
-        if (filters.features.length > 0) {
+        if (filters.classes && filters.features.length > 0) {
           for (const ft of feat) {
             clsFilt = filters.features.includes(ft.id + "");
             if (clsFilt) break;
           }
         }
-        if (filters.extras.length > 0) {
+        if (filters.extras && filters.extras.length > 0) {
           for (const ex of extr) {
             extrasFilt = filters.extras.includes(ex.id + "");
             if (extrasFilt) break;
