@@ -143,12 +143,12 @@ const getCars = async (carid, filters) => {
     manufacturer.name,
     rental_station.location
   FROM car,car_type,manufacturer,rental_station
-  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id
-  ORDER BY rental_station.id`;
+  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`;
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }
-  console.log(filters);
+  sql += " ORDER BY rental_station.id";
+  console.log(sql);
   const [rows, fields] = await con.query(sql);
   const newCars = await Promise.all(
     rows.map(async (car) => {
@@ -162,17 +162,17 @@ const getCars = async (carid, filters) => {
       let featureFilt = true;
       let extrasFilt = true;
       if (filters) {
-        if (filters.doors.length > 0)
+        if (filters.doors && filters.doors.length > 0)
           doorsFilt = filters.doors.includes(newC.doors);
-        if (filters.classes.length > 0)
+        if (filters.classes && filters.classes.length > 0)
           clsFilt = filters.classes.includes(cls[0].id + "");
-        if (filters.features.length > 0) {
+        if (filters.classes && filters.features.length > 0) {
           for (const ft of feat) {
             clsFilt = filters.features.includes(ft.id + "");
             if (clsFilt) break;
           }
         }
-        if (filters.extras.length > 0) {
+        if (filters.extras && filters.extras.length > 0) {
           for (const ex of extr) {
             extrasFilt = filters.extras.includes(ex.id + "");
             if (extrasFilt) break;
