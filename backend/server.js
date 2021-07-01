@@ -109,8 +109,8 @@ app.post("/register", async (request, response) => {
   }
 });
 
-app.get("/reservation", async(request, response) => {
-  
+app.get("/reservation", async (request, response) => {
+
 })
 
 /**
@@ -151,7 +151,7 @@ const getCars = async (carid, filters) => {
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }
-  sql+=" ORDER BY rental_station.id";
+  sql += " ORDER BY rental_station.id";
 
   console.log(filters);
   const [rows, fields] = await con.query(sql);
@@ -227,8 +227,8 @@ app.listen(3000, async () => {
   con = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "123",
-    database: "rental_portal", 
+    password: "1234",
+    database: "rental_portal",
   });
   const msg = await con.connect();
   console.log("Connected to DB1");
