@@ -221,9 +221,7 @@
             </div>
           </div>
           <div class="car-actions">
-            <a href="reservation.html?car_id=${
-              data.id
-            }"><button>Reservieren</button></a>
+            <button onclick="reserveCar('${data.type_id}')">Reservieren</button>
           </div>
         </div>`;
     };
@@ -289,6 +287,7 @@
             name: car.name,
             manufacturer: car.name,
             type: car.car_class_name,
+            type_id: car.cartypeid,
             doors: car.doors,
             seats: car.seats,
             features: car.features,
@@ -299,12 +298,27 @@
         );
       }
     };
-
     $(".submit-filter").click(async function (e) {
       $("#loading-animation-lottie").css("display", "block");
       await loadData();
     });
-
     loadData();
+
+    const reserveCar = async (car_type_id) => {
+      let data = await fetch("http://localhost:3000/reservation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          car_type_id: car_type_id,
+          date_from: "2020-03-24",
+          date_to: "2020-04-27",
+          customer_id: 2,
+        }),
+      });
+      data = await data.json();
+      console.log(data);
+    };
   </script>
 </html>

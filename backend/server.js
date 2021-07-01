@@ -108,8 +108,77 @@ app.post("/register", async (request, response) => {
     });
   }
 });
-
-app.get("/reservation", async (request, response) => {});
+app.get("/test123", async (request, response) => {
+  const data = await getTypesForClass(4);
+  return response.json(data);
+});
+app.post("/reservation", async (request, response) => {
+  const { car_type_id, date_from, date_to, customer_id } = request.body;
+  //check availability where given daterange not intersecting any current reservation range
+  const sql_check = /*sql */ `
+    SELECT * FROM reservation where car_id = ? AND 
+    -- fully intersect 
+    (("${date_from}" > rent_from AND "${date_to}" < rent_to) OR
+    -- from in range
+    ("${date_from}" > rent_from AND "${date_from}" < rent_to) OR
+    -- to in range
+    ("${date_to}" > rent_from AND "${date_to}" < rent_to))
+  `;
+  const sql_insert =
+    "INSERT INTO reservation (car_type_id,customer_id,reserved_at,rent_from,rent_to)VALUES(?,?,?,?,?)";
+  try {
+    const [rows, fields] = await con.query(sql_check, [car_type_id]);
+    if (rows.length > 0) {
+      //there are already reservations in this time range
+      //check for different car_class
+      const current_class = await getClassFromType(car_type_id);
+      console.log(current_class);
+      let counter = 0;
+      let available_types = [];
+      let new_class_id = current_class.id + 1;
+      while (counter < 6) {
+        const typesForClass = await getTypesForClass(new_class_id);
+        for (const typeShit of typesForClass) {
+          const [rows, fields] = await con.query(sql_check, [typeShit.id]);
+          if (rows.length === 0) available_types.push(typeShit);
+        }
+        new_class_id++;
+        if (new_class_id > 6) new_class_id = 1;
+        counter++;
+      }
+      if (available_types.length > 0) {
+        return response.json({
+          status: "warning",
+          message:
+            "zu diesem Zeitraum gibt es diesen auto-typen nicht mehr.Allerdings kann wir Ihnen eine anderen typen anbieten",
+          data: available_types,
+        });
+      }
+      return response.json({
+        status: "error",
+        message: "keine autos mehr verfügbar",
+      });
+    }
+    //write reservation to db
+    // await con.query(sql_insert, [
+    //   car_type_id,
+    //   customer_id,
+    //   new Date(Date.now()).toISOString().slice(0, 19).replace("T", " "),
+    //   date_from,
+    //   date_to,
+    // ]);
+    return response.json({
+      status: "success",
+      message: "erfolgreich reserviert",
+    });
+  } catch (error) {
+    console.log(error);
+    return response.json({
+      status: "error",
+      message: "Fehler bei der reservierung " + error,
+    });
+  }
+});
 
 /**
  * CARS
@@ -208,6 +277,31 @@ const getExtras = async (typeId) => {
   `,
     [typeId]
   );
+};
+
+const getClassFromType = async (typeId) => {
+  const [rows, fields] = await con.query(
+    /*sql */ `SELECT car_class.* from car_type,car_class where car_class.id = car_type.car_class_id AND car_type.id = ?`,
+    [typeId]
+  );
+  return rows[0];
+};
+const getTypesForClass = async (classId) => {
+  const [rows, fields] = await con.query(
+    /*sql */ `SELECT car_type.*,car_class.id as car_class_id,car_class.name as car_class_name 
+              from car_type,car_class
+              where car_class.id = car_type.car_class_id AND car_class_id = ?`,
+    [classId]
+  );
+  const newTypes = await Promise.all(
+    rows.map(async (cartype) => {
+      const [feat, feat_fields] = await getFeatures(cartype.id);
+      const [extr, extr_fields] = await getExtras(cartype.id);
+      const newT = { ...cartype, features: feat, extras: extr };
+      return newT;
+    })
+  );
+  return newTypes;
 };
 
 app.listen(3000, async () => {
