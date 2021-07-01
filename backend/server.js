@@ -109,7 +109,9 @@ app.post("/register", async (request, response) => {
   }
 });
 
-app.get("/reservation", async (request, response) => {});
+app.get("/reservation", async (request, response) => {
+
+})
 
 /**
  * CARS
@@ -215,7 +217,7 @@ app.listen(3000, async () => {
   con = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "1234",
     database: "rental_portal",
   });
   const msg = await con.connect();
