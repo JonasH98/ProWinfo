@@ -168,8 +168,8 @@ const getCars = async (carid, filters) => {
         if (filters.doors && filters.doors.length > 0)
           doorsFilt = filters.doors.includes(newC.doors);
         if (filters.classes && filters.classes.length > 0)
-          clsFilt = filters.classes.includes(car.car_class_id);
-        if (filters.classes && filters.features.length > 0) {
+          clsFilt = filters.classes.includes(car.car_class_id + "");
+        if (filters.features && filters.features.length > 0) {
           for (const ft of feat) {
             clsFilt = filters.features.includes(ft.id + "");
             if (clsFilt) break;
