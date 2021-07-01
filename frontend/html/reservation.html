@@ -1,51 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script defer src="../js/login_check.js"></script>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/reservation.css" />
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Autovermietung</title>
-  </head>
 
-  <body>
-    <navbar>
-      <div class="nav-group">
-        <a href="index.html">
-          <img
-            src="../images/OneStopLogo_Light.png"
-            alt="LOGO"
-            class="brand-logo"
-        /></a>
-      </div>
-      <div class="nav-group nav-group-authentication">
-        <a href="login.html"><button>Login</button></a>
-        <a href="login.html?tab=register-form"><button>Registrieren</button></a>
-      </div>
-    </navbar>
-    <main></main>
-  </body>
-  <script>
-    const createReservationCar = (data) => {
-      return /*html*/ `
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script defer src="../js/login_check.js"></script>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/reservation.css" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autovermietung</title>
+</head>
+
+<body>
+  <navbar>
+    <div class="nav-group">
+      <a href="index.html">
+        <img src="../images/OneStopLogo_Light.png" alt="LOGO" class="brand-logo" /></a>
+    </div>
+    <div class="nav-group nav-group-authentication">
+      <a href="login.html"><button>Login</button></a>
+      <a href="login.html?tab=register-form"><button>Registrieren</button></a>
+    </div>
+  </navbar>
+  <main></main>
+</body>
+<script>
+  const createReservationCar = (data) => {
+    return /*html*/ `
     <div class="car-item">
         <div class="car-top">
           <div class="slideshow-container">
             <div class="mySlides fade">
-              <img src="../images/bmw1.png" style="width: 100%" />
+              <img src="../images/bmw1.png" style="width: 600px" />
             </div>
 
             <div class="mySlides fade">
               <img
                 src="../images/bmw3.png"
-                style="width: 90%; margin-left: 10%"
+                style="width: 600px;"
               />
             </div>
             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -68,48 +62,49 @@
         </div>
         
       </div>`;
-    };
-    var slideIndex = 1;
-    const loadData = async () => {
-      let searchParams = new URLSearchParams(window.location.search);
-      if (searchParams.has("car_id")) {
-        const car_id = searchParams.get("car_id");
-        let data = await fetch(`http://localhost:3000/cars/${car_id}`);
-        data = await data.json();
-        console.log(data);
-        $("main").append(createReservationCar(data[0]));
+  };
+  var slideIndex = 1;
+  const loadData = async () => {
+    let searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has("car_id")) {
+      const car_id = searchParams.get("car_id");
+      let data = await fetch(`http://localhost:3000/cars/${car_id}`);
+      data = await data.json();
+      console.log(data);
+      $("main").append(createReservationCar(data[0]));
 
-        showSlides(slideIndex);
-      }
-    };
-
-    loadData();
-
-    function plusSlides(n) {
-      showSlides((slideIndex += n));
+      showSlides(slideIndex);
     }
+  };
 
-    function currentSlide(n) {
-      showSlides((slideIndex = n));
-    }
+  loadData();
 
-    function showSlides(n) {
-      var slides = document.getElementsByClassName("mySlides");
-      var dots = document.getElementsByClassName("dot");
-      if (n > slides.length) {
-        slideIndex = 1;
-      }
-      if (n < 1) {
-        slideIndex = slides.length;
-      }
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-      }
-      for (let i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
-      }
-      slides[slideIndex - 1].style.display = "block";
-      dots[slideIndex - 1].className += " active";
+  function plusSlides(n) {
+    showSlides((slideIndex += n));
+  }
+
+  function currentSlide(n) {
+    showSlides((slideIndex = n));
+  }
+
+  function showSlides(n) {
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {
+      slideIndex = 1;
     }
-  </script>
+    if (n < 1) {
+      slideIndex = slides.length;
+    }
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+  }
+</script>
+
 </html>
