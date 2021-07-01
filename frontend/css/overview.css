@@ -16,7 +16,7 @@ main {
   padding: 1rem;
   align-items: center;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 }
 .sidebar {
   background: var(--bg-second);
@@ -88,7 +88,7 @@ main {
   padding: 1rem;
   background: var(--bg-second);
   border-radius: 1rem;
-  gap: 1rem;
+  gap: 4rem;
 }
 .car-header {
   border-bottom: 1px solid var(--bg-third);
@@ -96,7 +96,8 @@ main {
 .car-info-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+
+  gap: 2rem;
 }
 .car-specification {
   margin-bottom: 1rem;

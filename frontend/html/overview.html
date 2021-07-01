@@ -164,11 +164,11 @@
   <script>
     const createCarElement = (data) => {
       const features = data.features
-        .map((feature) => `<span>${feature.name}</span>`)
+        .map((feature) => `<span>- ${feature.name}</span><br>`)
         .join(" ");
 
       const extras = data.extras
-        .map((extra) => `<span>${extra.name}</span>`)
+        .map((extra) => `<span>- ${extra.name}</span><br>`)
         .join(" ");
       return /*html*/ `<div class="car-item">
           <div class="car-img">
