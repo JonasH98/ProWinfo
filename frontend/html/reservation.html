@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     <script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous"
-  ></script>
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script defer src="../js/login_check.js"></script>
     <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/reservation.css" />
     <meta charset="UTF-8" />
@@ -24,64 +25,64 @@
             class="brand-logo"
         /></a>
       </div>
-      <div class="nav-group">
+      <div class="nav-group nav-group-authentication">
         <a href="login.html"><button>Login</button></a>
         <a href="login.html?tab=register-form"><button>Registrieren</button></a>
       </div>
     </navbar>
-    <main>
-    </main>
+    <main></main>
   </body>
   <script>
     const createReservationCar = (data) => {
-    
-    return /*html*/ `
+      return /*html*/ `
     <div class="car-item">
-        <div class="slideshow-container">
-          <!-- Full-width images with number and caption text -->
-          <div class="mySlides fade">
-            <img src="../images/bmw1.png" style="width: 100%" />
-          </div>
+        <div class="car-top">
+          <div class="slideshow-container">
+            <div class="mySlides fade">
+              <img src="../images/bmw1.png" style="width: 100%" />
+            </div>
 
-          <div class="mySlides fade">
-            <img
-              src="../images/bmw3.png"
-              style="width: 90%; margin-left: 10%"
-            />
+            <div class="mySlides fade">
+              <img
+                src="../images/bmw3.png"
+                style="width: 90%; margin-left: 10%"
+              />
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
           </div>
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a>
+          <div class="car-right-side">
+            <div class="car-info">
+              <img class="car-logo" src="../images/bmwlogo.png" width="100" />
+              <h1 class="car-name">${data.name}</h1>
+              <span class="car-class-name">${data.car_class_name}</span>
+              <h2 class="car-price"><em>${data.car_price}/pro Tag</em></h2>
+              <span>Abholort: ${data.location}</span>
+            </div>
+          </div>
         </div>
-        <br />
-        <div class="txt">
-          <img src="../images/bmwlogo.png" style="width: 15%; float: right" />
-          <h1>${data.name}</h1>
-          ${data.classes[0].name}
-          <br />
-          <br />
-          <h2><em>${data.car_price}/pro Tag</em></h2>
+        <div class="car-bottom">
+          <input type="date" id="datefrom" value="2021-06-28">
+          <input type="date" id="dateto" value="2021-06-28">
+          <a href="wait.html" class="reserve-btn"><button>Reservieren</button></a>
         </div>
-
-        <div class="action">
-          <span>Abholort: ${data.location}</span>
-          <a href="wait.html"><button class="reserve">Reservieren</button></a>
-        </div>
-      </div>`
-    }
+        
+      </div>`;
+    };
     var slideIndex = 1;
-    const loadData = async() => {
+    const loadData = async () => {
       let searchParams = new URLSearchParams(window.location.search);
       if (searchParams.has("car_id")) {
         const car_id = searchParams.get("car_id");
         let data = await fetch(`http://localhost:3000/cars/${car_id}`);
         data = await data.json();
         console.log(data);
-        $('main').append(createReservationCar(data[0]));
+        $("main").append(createReservationCar(data[0]));
 
         showSlides(slideIndex);
-      }   
-    }
-    
+      }
+    };
+
     loadData();
 
     function plusSlides(n) {
@@ -93,7 +94,6 @@
     }
 
     function showSlides(n) {
-      var i;
       var slides = document.getElementsByClassName("mySlides");
       var dots = document.getElementsByClassName("dot");
       if (n > slides.length) {
@@ -102,10 +102,10 @@
       if (n < 1) {
         slideIndex = slides.length;
       }
-      for (i = 0; i < slides.length; i++) {
+      for (let i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
       }
-      for (i = 0; i < dots.length; i++) {
+      for (let i = 0; i < dots.length; i++) {
         dots[i].className = dots[i].className.replace(" active", "");
       }
       slides[slideIndex - 1].style.display = "block";

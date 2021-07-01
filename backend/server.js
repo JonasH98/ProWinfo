@@ -145,9 +145,9 @@ const getCars = async (carid, filters) => {
     `SELECT car.id,
     car_type.seats,car_type.doors,car_type.id AS cartypeid,
     manufacturer.name,
-    rental_station.location, car_price
-  FROM car,car_type,manufacturer,rental_station
-  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id`;
+    rental_station.location, car_price,car_class.id as car_class_id,car_class.name as car_class_name
+  FROM car,car_type,manufacturer,rental_station,car_class
+  where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id AND car_class.id = car_type.car_class_id`;
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }
@@ -159,8 +159,8 @@ const getCars = async (carid, filters) => {
     rows.map(async (car) => {
       const [feat, feat_fields] = await getFeatures(car.cartypeid);
       const [extr, extr_fields] = await getExtras(car.cartypeid);
-      const [cls, cls_fields] = await getClasses(car.cartypeid);
-      const newC = { ...car, features: feat, extras: extr, classes: cls };
+
+      const newC = { ...car, features: feat, extras: extr };
 
       let clsFilt = true;
       let doorsFilt = true;
@@ -170,7 +170,7 @@ const getCars = async (carid, filters) => {
         if (filters.doors && filters.doors.length > 0)
           doorsFilt = filters.doors.includes(newC.doors);
         if (filters.classes && filters.classes.length > 0)
-          clsFilt = filters.classes.includes(cls[0].id + "");
+          clsFilt = filters.classes.includes(car.car_class_id);
         if (filters.classes && filters.features.length > 0) {
           for (const ft of feat) {
             clsFilt = filters.features.includes(ft.id + "");
@@ -197,16 +197,6 @@ const getFeatures = async (typeId) => {
     SELECT feature.* 
     FROM car_type_feature,feature 
     WHERE feature.id = car_type_feature.feature_id AND car_type_feature.car_type_id = ?
-  `,
-    [typeId]
-  );
-};
-const getClasses = async (typeId) => {
-  return await con.query(
-    /*sql */ `
-    SELECT car_class.* 
-    FROM car_type_class,car_class 
-    WHERE car_class.id = car_type_class.car_class_id AND car_type_class.car_type_id = ?
   `,
     [typeId]
   );
