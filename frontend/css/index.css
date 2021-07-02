@@ -5,6 +5,9 @@ main {
   gap: 4rem;
 }
 
+label {
+  font-size: 27px;
+}
 .search-box {
   display: flex;
   gap: 1rem;

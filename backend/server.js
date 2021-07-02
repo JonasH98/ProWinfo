@@ -324,7 +324,7 @@ app.listen(3000, async () => {
   con = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "123",
     database: "rental_portal",
   });
   const msg = await con.connect();

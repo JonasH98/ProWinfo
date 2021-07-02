@@ -8,6 +8,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="../js/login_check.js" defer></script>
     <title>Autovermietung</title>
+    <script type="text/javascript">
+      function checkFormular() {
+        var f=document.rentForm;
+        var fehler ="";
+        if(f.myStations.value =="") {
+          fehler += "-dein Abholort\n";
+        }
+        if(f.startDate.value =="") {
+          fehler += "-dein Abholdatum\n";
+        }
+        if(f.endDate.value =="") {
+          fehler += "-dein Rückgabedatum\n";
+        }
+        if(f.endDate.value < f.startDate.value) {
+          fehler += "-Rückgabedatum ist vor dem Abholdatum\n";
+        }
+        if(fehler !="") {
+          var fehlertext = "Die folgenden Felder wurden nicht richtig ausgefüllt:\n\n";
+          fehlertext += fehler;
+          alert(fehlertext + "\nBitte füll die Felder aus");
+          return false;
+        }
+        return true;
+      }
+    </script>
   </head>
 
   <body>
@@ -27,43 +52,21 @@
     </navbar>
     <main>
       <div>
-        <form class="search-box" method="get" action="overview.html">
-          <input
-            type="text"
-            class="search-rental"
-            placeholder="Hier nach deinem Traumauto suchen und fündig werden..."
-          />
+        <form class="search-box" method="get" action="overview.html" name="rentForm" onSubmit="return checkFormular()">
+          <label for="myStations">Abholort: </label>
+          <input list="stations" id="myStations" name="myStations">
+          <datalist id="stations">
+            <option value="Münster">
+            <option value="Borken">
+          </datalist>
+
+          <label for="startDate">Abholdatum</label>
+          <input type="date" id="startDate" name="startDate">
+          <label for="endDate">Rückgabedatum</label>
+          <input type="date" id="endDate" name="endDate">
           <button type="submit">suchen</button>
+
         </form>
-      </div>
-      <div class="car-list">
-        <div class="car-item">
-          <div class="car-img"></div>
-          <div class="car-information">heftiges auto</div>
-          <div class="car-actions">
-            <a href="reservation.html"
-              ><button class="reserve">Reservieren</button></a
-            >
-          </div>
-        </div>
-        <div class="car-item">
-          <div class="car-img"></div>
-          <div class="car-information">heftiges auto</div>
-          <div class="car-actions">
-            <a href="reservation.html"
-              ><button class="reserve">Reservieren</button></a
-            >
-          </div>
-        </div>
-        <div class="car-item">
-          <div class="car-img"></div>
-          <div class="car-information">heftiges auto</div>
-          <div class="car-actions">
-            <a href="reservation.html"
-              ><button class="reserve">Reservieren</button></a
-            >
-          </div>
-        </div>
       </div>
     </main>
   </body>
