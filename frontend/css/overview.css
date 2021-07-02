@@ -109,6 +109,28 @@ main {
   color: var(--col-accent);
 }
 
+/*popup car type options box */
+.car-type-boxes {
+  display: flex;
+  justify-content: space-around;
+  margin: 2rem;
+}
+.car-type-box h3 {
+  margin-bottom: 1rem;
+}
+.car-type-box button {
+  margin-top: 1rem;
+}
+.car-type-box {
+  border: 1px solid var(--col-accent-ltr);
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
 @media (max-width: 1300px) {
   .car-info-content {
     grid-template-columns: repeat(1, 1fr);

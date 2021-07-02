@@ -109,14 +109,17 @@ app.post("/register", async (request, response) => {
   }
 });
 app.get("/test123", async (request, response) => {
-  const data = await getTypesForClass(4);
-  return response.json(data);
+  const sql = "UPDATE reservation set car_type_id = ? where id = ?";
+  for (let i = 1; i <= 100; i++) {
+    const typeid = Math.random() * (8 - 1) + 1;
+    await con.query(sql, [typeid, i]);
+  }
 });
 app.post("/reservation", async (request, response) => {
   const { car_type_id, date_from, date_to, customer_id } = request.body;
   //check availability where given daterange not intersecting any current reservation range
   const sql_check = /*sql */ `
-    SELECT * FROM reservation where car_id = ? AND 
+    SELECT * FROM reservation where car_type_id = ? AND 
     -- fully intersect 
     (("${date_from}" > rent_from AND "${date_to}" < rent_to) OR
     -- from in range
@@ -127,20 +130,25 @@ app.post("/reservation", async (request, response) => {
   const sql_insert =
     "INSERT INTO reservation (car_type_id,customer_id,reserved_at,rent_from,rent_to)VALUES(?,?,?,?,?)";
   try {
+    const numberAvilable = await numberOfCarsAvailableForType(car_type_id);
     const [rows, fields] = await con.query(sql_check, [car_type_id]);
-    if (rows.length > 0) {
+    //check if all cars for that car_type are already reserved
+    if (rows.length > numberAvilable) {
       //there are already reservations in this time range
       //check for different car_class
       const current_class = await getClassFromType(car_type_id);
-      console.log(current_class);
       let counter = 0;
       let available_types = [];
       let new_class_id = current_class.id + 1;
       while (counter < 6) {
         const typesForClass = await getTypesForClass(new_class_id);
         for (const typeShit of typesForClass) {
+          const numberAvilable = await numberOfCarsAvailableForType(
+            typeShit.id
+          );
           const [rows, fields] = await con.query(sql_check, [typeShit.id]);
-          if (rows.length === 0) available_types.push(typeShit);
+
+          if (rows.length < numberAvilable) available_types.push(typeShit);
         }
         new_class_id++;
         if (new_class_id > 6) new_class_id = 1;
@@ -150,7 +158,7 @@ app.post("/reservation", async (request, response) => {
         return response.json({
           status: "warning",
           message:
-            "zu diesem Zeitraum gibt es diesen auto-typen nicht mehr.Allerdings kann wir Ihnen eine anderen typen anbieten",
+            "Zu diesem Zeitraum gibt es diesen Auto-Typen nicht mehr.\nAllerdings können wir Ihnen eine anderen Typen anbieten",
           data: available_types,
         });
       }
@@ -302,6 +310,13 @@ const getTypesForClass = async (classId) => {
     })
   );
   return newTypes;
+};
+const numberOfCarsAvailableForType = async (typeId) => {
+  const [rows, fields] = await con.query(
+    /*sql */ `SELECT count(*) as cars_count FROM car where car_type_id = ?`,
+    [typeId]
+  );
+  return rows[0].cars_count;
 };
 
 app.listen(3000, async () => {
