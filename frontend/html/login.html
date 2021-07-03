@@ -94,7 +94,7 @@
       formData = new FormData(formData);
       formData = Object.fromEntries(formData);
       console.log(formData);
-      let res = await fetch(`http://localhost:3000/${apiEndpoint}`, {
+      let res = await fetch(`http://localhost:5431/${apiEndpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
