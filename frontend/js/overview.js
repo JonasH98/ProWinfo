@@ -190,6 +190,29 @@ const openOtherTypesDialog = (data) => {
 };
 
 const reserveCar = async (car_type_id) => {
+  if (localStorage.getItem("user") === null) {
+    showYesNoDialog(
+      "Fehler beim reservieren",
+      "Bevor Sie reservieren können müssen Sie sich erst einloggen",
+      "zum Login",
+      "Ok",
+      "window.location.href='login.html'",
+      "loginreserveerrormodal"
+    );
+    return;
+  }
+  if (localStorage.getItem("user") === "admin") {
+    showYesNoDialog(
+      "Fehler beim reservieren",
+      "Der Admin account darf keine Autos reservieren",
+      "",
+      "Ok",
+      "window.location.href='login.html'",
+      "loginreserveadminerrormodal"
+    );
+    return;
+  }
+
   $("#loading-animation-lottie-modal").css("display", "flex");
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");

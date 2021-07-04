@@ -12,6 +12,8 @@ app.use(
 );
 let con;
 
+let login_tries = new Map();
+
 const fieldsAreEmpty = (array) => {
   for (let i = 0; i < array.length; i++) {
     const e = array[i];
@@ -25,6 +27,8 @@ const fieldsAreEmpty = (array) => {
  */
 app.post("/login", async (request, response) => {
   const data = request.body;
+  if (!login_tries.has(data.email)) login_tries.set(data.email, 0);
+
   console.log(data);
   const needed = [data.email, data.password];
   if (fieldsAreEmpty(needed))
@@ -43,12 +47,23 @@ app.post("/login", async (request, response) => {
         status: "error",
         message: "Kein Account mit der Mail vorhanden",
       });
+
+    if (login_tries.get(data.email) > 3) {
+      return response.json({
+        status: "error",
+        message: "Der Account wurde aufgrund zu häufiger fehlversuche gesperrt",
+      });
+    }
     const pw_correct = await bcrypt.compare(data.password, rows[0].password);
     if (pw_correct)
       return response.json({
         status: "success",
         message: "Login erfolgreich",
       });
+
+    login_tries.set(data.email, login_tries.get(data.email) + 1);
+
+    console.log(login_tries);
     return response.json({
       status: "error",
       message: "Kombination aus Email und Passwort fehlerhaft",
@@ -121,6 +136,23 @@ app.get("/rental/:id", async (request, response) => {
    `;
   const [rows, fields] = await con.query(sql, [rental_id]);
   return response.json(rows);
+});
+
+app.post("/take_back_protocol", async (request, response) => {
+  const { rental_id, cur_kilometers } = request.body;
+  const sql = /*sql*/ `INSERT INTO take_back_protocol (rental_id,cur_kilometers) VALUES (?,?)`;
+  try {
+    await con.query(sql, [rental_id, cur_kilometers]);
+    return response.json({
+      status: "success",
+      message: "Rücknahme erfolgreich abgeschlossen",
+    });
+  } catch (error) {
+    return response.json({
+      status: "error",
+      message: "Fehler beim eintragen der Rücknahme" + error,
+    });
+  }
 });
 
 app.get("/reservation/:id", async (request, response) => {

@@ -141,7 +141,7 @@ const rentCar = async (car_id) => {
 const openApplyDialog = (car_id) => {
   showYesNoDialog(
     "Wirklich mieten?",
-    "Soll dieser Auto wirklich gemietet werden?",
+    "Soll dieses Auto wirklich gemietet werden?",
     "Ja",
     "Nein",
     "rentCar(" + car_id + ");",
@@ -154,8 +154,8 @@ const createReserveElement = (data) => {
         <span>Name: ${data.full_name}</span>
         <span>Adresse: ${data.address}</span>
         <span>Station: ${data.location}</span>
-        <span>Start: ${data.rent_from}</span>
-        <span>Ende: ${data.rent_to}</span>
+        <span>Start: ${data.rent_from.slice(0, 10)}</span>
+        <span>Ende: ${data.rent_to.slice(0, 10)}</span>
     `;
 };
 
