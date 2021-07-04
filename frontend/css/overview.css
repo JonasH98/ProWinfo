@@ -130,6 +130,11 @@ main {
   justify-content: space-between;
   gap: 0.5rem;
 }
+.splide__slide img {
+  width: 300px;
+  height: auto;
+  border-radius: 20px;
+}
 
 @media (max-width: 1300px) {
   .car-info-content {

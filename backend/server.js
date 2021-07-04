@@ -261,7 +261,7 @@ const getCars = async (carid, filters) => {
     `SELECT car.id,
     car_type.seats,car_type.doors,car_type.id AS cartypeid,
     manufacturer.name,
-    rental_station.location, car_price,car_class.id as car_class_id,car_class.name as car_class_name
+    rental_station.location, car_type_price,car_class.id as car_class_id,car_class.name as car_class_name,car_class.description AS car_class_description
   FROM car,car_type,manufacturer,rental_station,car_class
   where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id AND car_class.id = car_type.car_class_id`;
   if (carid) {

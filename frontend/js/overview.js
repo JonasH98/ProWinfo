@@ -1,5 +1,14 @@
 let searchParams = new URLSearchParams(window.location.search);
 
+const imagesAvailable = {
+  Kleinwagen: 7,
+  Kombi: 6,
+  Kompaktklasse: 11,
+  Mittelklasse: 6,
+  Oberklasse: 10,
+  SUV: 7,
+};
+
 const createCarElement = (data) => {
   const features = data.features
     .map((feature) => `<span>- ${feature.name}</span><br>`)
@@ -8,16 +17,25 @@ const createCarElement = (data) => {
   const extras = data.extras
     .map((extra) => `<span>- ${extra.name}</span><br>`)
     .join(" ");
+
+  let splide_slides = "";
+  for (let index = 1; index <= imagesAvailable[data.type]; index++) {
+    splide_slides += `<li class="splide__slide"><img src="../images/cars/${data.type}/${index}.png"/></li>`;
+  }
+
   return /*html*/ `<div class="car-item">
-          <div class="car-img">
-            <img
-              src=${data.imgUrl}
-              width="300"
-            />
+          <div class="splide">
+            <div class="splide__track">
+              <ul class="splide__list">
+                ${splide_slides}
+              </ul>
+            </div>
           </div>
           <div class="car-info">
             <div class="car-header">
-              <h1 class="car-name">${data.name} oder ähnliche...</h1>
+              <h1 class="car-name">${
+                data.name
+              } <span class="very-small-text">oder ähnliche...</span></h1>
             </div>
             <div class="car-info-content">
               <div class="car-specification car-type">
@@ -43,12 +61,6 @@ const createCarElement = (data) => {
                   <i class="far fa-star"></i> Extras
                 </h2>
                 ${extras}
-              </div>
-              <div class="car-specification car-extras">
-                <h2 class="car-specification-header">
-                  <i class="fas fa-map-marker-alt"></i> Ort
-                </h2>
-                ${data.location}
               </div>
               <div class="car-specification car-price">
                 <h2 class="car-specification-header">
@@ -113,7 +125,7 @@ const loadData = async () => {
       createCarElement({
         id: car.id,
         imgUrl: `../images/cars/${car.car_class_name}/1.png`,
-        name: car.name,
+        name: car.car_class_description,
         manufacturer: car.name,
         type: car.car_class_name,
         type_id: car.cartypeid,
@@ -122,9 +134,15 @@ const loadData = async () => {
         features: car.features,
         extras: car.extras,
         location: car.location,
-        price: car.car_price,
+        price: car.car_type_price,
       })
     );
+  }
+  var elms = document.getElementsByClassName("splide");
+  for (var i = 0, len = elms.length; i < len; i++) {
+    new Splide(elms[i], {
+      width: "300px",
+    }).mount();
   }
 };
 

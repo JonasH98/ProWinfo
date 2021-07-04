@@ -37,6 +37,9 @@ button:hover {
   color: var(--col-accent);
   border-color: var(--col-accent);
 }
+button:hover svg {
+  fill: var(--fg-very-light);
+}
 button:active,
 button:focus {
   border-color: var(--col-accent-ltr);
@@ -57,6 +60,12 @@ select:active,
 select:focus {
   border-color: var(--col-accent);
   background: var(--bg-very-dark);
+}
+
+.very-small-text {
+  font-size: 12px !important;
+  font-weight: normal !important;
+  color: var(--bg-third);
 }
 
 navbar {

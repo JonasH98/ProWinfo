@@ -94,8 +94,13 @@
       formData = new FormData(formData);
       formData = Object.fromEntries(formData);
 
-      if (formData.email === "admin" && formData.password === "admin") {
-        window.location.href = "admin_dashboard.html";
+      if (
+        apiEndpoint === "login" &&
+        formData.email === "admin" &&
+        formData.password === "admin"
+      ) {
+        localStorage.setItem("user", formData.email);
+        window.location.href = "index.html";
         return;
       }
 

@@ -1,4 +1,14 @@
 let reservation_id = null;
+
+const imagesAvailable = {
+  Kleinwagen: 7,
+  Kombi: 6,
+  Kompaktklasse: 11,
+  Mittelklasse: 6,
+  Oberklasse: 10,
+  SUV: 7,
+};
+
 const createCarElement = (data) => {
   const features = data.features
     .map((feature) => `<span>- ${feature.name}</span><br>`)
@@ -7,15 +17,24 @@ const createCarElement = (data) => {
   const extras = data.extras
     .map((extra) => `<span>- ${extra.name}</span><br>`)
     .join(" ");
+
+  let splide_slides = "";
+  for (let index = 1; index <= imagesAvailable[data.type]; index++) {
+    splide_slides += `<li class="splide__slide"><img src="../images/cars/${data.type}/${index}.png"/></li>`;
+  }
   return /*html*/ `<div class="car-item">
-            <div class="car-img">
-              <img
-                src=${data.imgUrl}
-                width="300"
-              />
+            <div class="splide">
+              <div class="splide__track">
+                <ul class="splide__list">
+                  ${splide_slides}
+                </ul>
+              </div>
             </div>
             <div class="car-info">
               <div class="car-header">
+                <span class="very-small-text">ähnlich wie <b>${
+                  data.type_name
+                }</b> von</span>
                 <h1 class="car-name">${data.name}</h1>
               </div>
               <div class="car-info-content">
@@ -75,20 +94,24 @@ const loadData = async (car_type_id) => {
     $(".content").append(
       createCarElement({
         id: car.id,
-        imgUrl:
-          "https://freepngimg.com/thumb/car/3-2-car-free-download-png.png",
+        imgUrl: `../images/cars/${car.car_class_name}/1.png`,
         name: car.name,
-        manufacturer: car.name,
+        type_name: car.car_class_description,
         type: car.car_class_name,
-        type_id: car.cartypeid,
         doors: car.doors,
         seats: car.seats,
         features: car.features,
         extras: car.extras,
         location: car.location,
-        price: car.car_price,
+        price: car.car_type_price,
       })
     );
+  }
+  var elms = document.getElementsByClassName("splide");
+  for (var i = 0, len = elms.length; i < len; i++) {
+    new Splide(elms[i], {
+      width: "300px",
+    }).mount();
   }
 };
 
@@ -146,6 +169,10 @@ const loadReserveData = async () => {
     },
   });
   data = await data.json();
+  if (data.length === 0) {
+    $(".reserve-data").html("<span>ungültige Reservierungsnummer</span>");
+    return;
+  }
   console.log(data[0]);
   $(".reserve-data").html(createReserveElement(data[0]));
   loadData(data[0].car_type_id);
