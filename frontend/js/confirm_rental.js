@@ -1,3 +1,4 @@
+let reservation_id = null;
 const createCarElement = (data) => {
   const features = data.features
     .map((feature) => `<span>- ${feature.name}</span><br>`)
@@ -15,7 +16,7 @@ const createCarElement = (data) => {
             </div>
             <div class="car-info">
               <div class="car-header">
-                <h1 class="car-name">${data.name} oder ähnliche...</h1>
+                <h1 class="car-name">${data.name}</h1>
               </div>
               <div class="car-info-content">
                 <div class="car-specification car-type">
@@ -42,12 +43,6 @@ const createCarElement = (data) => {
                   </h2>
                   ${extras}
                 </div>
-                <div class="car-specification car-extras">
-                  <h2 class="car-specification-header">
-                    <i class="fas fa-map-marker-alt"></i> Ort
-                  </h2>
-                  ${data.location}
-                </div>
                 <div class="car-specification car-price">
                   <h2 class="car-specification-header">
                     <i class="far fa-money-bill-alt"></i> Preis
@@ -57,7 +52,7 @@ const createCarElement = (data) => {
               </div>
             </div>
             <div class="car-actions">
-              <button onclick="">Auswählen</button>
+              <button onclick="openApplyDialog('${data.id}')">Auswählen</button>
             </div>
           </div>`;
 };
@@ -97,18 +92,53 @@ const loadData = async (car_type_id) => {
   }
 };
 
+const rentCar = async (car_id) => {
+  let data = await fetch("http://localhost:5431/rent_car", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      car_id: car_id,
+      reservation_id: reservation_id,
+    }),
+  });
+  data = await data.json();
+  console.log(data);
+  showYesNoDialog(
+    data.status === "success" ? "Erfolgreich" : "Fehler",
+    data.message,
+    "Ok",
+    "",
+    "window.location.href='index.html'",
+    "dsgfergerer"
+  );
+};
+
+const openApplyDialog = (car_id) => {
+  showYesNoDialog(
+    "Wirklich mieten?",
+    "Soll dieser Auto wirklich gemietet werden?",
+    "Ja",
+    "Nein",
+    "rentCar(" + car_id + ");",
+    "test1233"
+  );
+};
+
 const createReserveElement = (data) => {
   return /*html */ `
-        <span>${data.full_name}</span>
-        <span>${data.address}</span>
-        <span>${data.location}</span>
-        <span>${data.rent_from}</span>
-        <span>${data.rent_to}</span>
+        <span>Name: ${data.full_name}</span>
+        <span>Adresse: ${data.address}</span>
+        <span>Station: ${data.location}</span>
+        <span>Start: ${data.rent_from}</span>
+        <span>Ende: ${data.rent_to}</span>
     `;
 };
 
 const loadReserveData = async () => {
   const reserve_id = $("#reserve_id").val();
+  reservation_id = reserve_id;
   let data = await fetch(`http://localhost:5431/reservation/${reserve_id}`, {
     method: "GET",
     headers: {

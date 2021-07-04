@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/overview.css" />
     <link rel="stylesheet" href="../css/confirm_rental.css" />
-    <script src="../js/confirm_rental.js"></script>
+    <link rel="stylesheet" href="../css/modal.css" />
+    <script src="../js/custom_modal_creator.js" defer></script>
+    <script src="../js/confirm_rental.js" defer></script>
     <title>Mietvertrag abschließen</title>
   </head>
   <body>
@@ -38,8 +40,11 @@
     <main>
       <div class="search-and-data">
         <div class="reserve-search">
-          <span>Reservierungsnummer: </span
-          ><input type="text" id="reserve_id" />
+          <input
+            type="text"
+            id="reserve_id"
+            placeholder="Reservierungsnummer"
+          />
           <button onclick="loadReserveData()">suchen</button>
         </div>
         <div class="reserve-data"></div>

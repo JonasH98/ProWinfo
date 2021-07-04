@@ -88,13 +88,11 @@ const getFilters = () => {
   const doors = getIds(".filter-btn-doors.is-selected");
   const features = getIds(".filter-btn-features.is-selected");
   const extras = getIds(".filter-btn-extras.is-selected");
-  const location = searchParams.get("myStations");
   return {
     classes: cls,
     doors: doors,
     features: features,
     extras: extras,
-    location: location,
   };
 };
 const loadData = async () => {
@@ -114,8 +112,7 @@ const loadData = async () => {
     $(".content").append(
       createCarElement({
         id: car.id,
-        imgUrl:
-          "https://freepngimg.com/thumb/car/3-2-car-free-download-png.png",
+        imgUrl: `../images/cars/${car.car_class_name}/1.png`,
         name: car.name,
         manufacturer: car.name,
         type: car.car_class_name,
@@ -188,6 +185,7 @@ const reserveCar = async (car_type_id) => {
       date_from: startDate, //"2020-03-24",
       date_to: endDate, //"2020-04-27",
       customer_id: 2,
+      rental_station_id: searchParams.get("myStations"),
     }),
   });
   data = await data.json();

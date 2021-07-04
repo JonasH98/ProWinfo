@@ -1,4 +1,11 @@
 @import "./vars.css";
+
+.reserve-search {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem;
+}
 .reserve-data {
   display: flex;
   flex-direction: column;
@@ -7,4 +14,5 @@
   background: var(--bg-very-dark);
   border: 1px solid var(--col-accent);
   gap: 0.5rem;
+  border-radius: 1rem;
 }

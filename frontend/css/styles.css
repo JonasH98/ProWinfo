@@ -41,7 +41,8 @@ button:active,
 button:focus {
   border-color: var(--col-accent-ltr);
 }
-input {
+input,
+select {
   background: var(--bg-third);
   border: 2px solid transparent;
   padding: 0.4rem 1rem;
@@ -51,7 +52,9 @@ input {
   outline: none;
 }
 input:active,
-input:focus {
+input:focus,
+select:active,
+select:focus {
   border-color: var(--col-accent);
   background: var(--bg-very-dark);
 }

@@ -108,7 +108,6 @@ app.post("/register", async (request, response) => {
     });
   }
 });
-
 app.get("/reservation/:id", async (request, response) => {
   const reservation_id = request.params.id;
   console.log(reservation_id);
@@ -123,7 +122,8 @@ app.get("/reservation/:id", async (request, response) => {
   return response.json(rows);
 });
 app.post("/reservation", async (request, response) => {
-  const { car_type_id, date_from, date_to, customer_id } = request.body;
+  const { car_type_id, date_from, date_to, customer_id, rental_station_id } =
+    request.body;
   //check availability where given daterange not intersecting any current reservation range
   const sql_check = /*sql */ `
     SELECT * FROM reservation where car_type_id = ? AND 
@@ -135,7 +135,7 @@ app.post("/reservation", async (request, response) => {
     ("${date_to}" > rent_from AND "${date_to}" < rent_to))
   `;
   const sql_insert =
-    "INSERT INTO reservation (car_type_id,customer_id,reserved_at,rent_from,rent_to)VALUES(?,?,?,?,?)";
+    "INSERT INTO reservation (car_type_id,customer_id,reserved_at,rent_from,rent_to,rental_station_id)VALUES(?,?,?,?,?,?)";
   try {
     const numberAvilable = await numberOfCarsAvailableForType(car_type_id);
     const [rows, fields] = await con.query(sql_check, [car_type_id]);
@@ -175,13 +175,14 @@ app.post("/reservation", async (request, response) => {
       });
     }
     //write reservation to db
-    // await con.query(sql_insert, [
-    //   car_type_id,
-    //   customer_id,
-    //   new Date(Date.now()).toISOString().slice(0, 19).replace("T", " "),
-    //   date_from,
-    //   date_to,
-    // ]);
+    await con.query(sql_insert, [
+      car_type_id,
+      customer_id,
+      new Date(Date.now()).toISOString().slice(0, 19).replace("T", " "),
+      date_from,
+      date_to,
+      rental_station_id,
+    ]);
     return response.json({
       status: "success",
       message: "erfolgreich reserviert",
@@ -191,6 +192,24 @@ app.post("/reservation", async (request, response) => {
     return response.json({
       status: "error",
       message: "Fehler bei der reservierung " + error,
+    });
+  }
+});
+
+app.post("/rent_car", async (request, response) => {
+  const { car_id, reservation_id } = request.body;
+  const sql = "INSERT INTO rental (car_id,reservation_id) VALUES(?,?)";
+  try {
+    await con.query(sql, [car_id, reservation_id]);
+    return response.json({
+      status: "success",
+      message: "Mietvertrag erfolgreich abgeschlossen",
+    });
+  } catch (err) {
+    console.log(error);
+    return response.json({
+      status: "error",
+      message: "Fehler bei der abschließen des Mietvertrags" + error,
     });
   }
 });
@@ -232,9 +251,6 @@ const getCars = async (carid, filters) => {
   where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id AND car_class.id = car_type.car_class_id`;
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
-  }
-  if (filters && filters.location) {
-    sql += ` AND rental_station.id = "${filters.location}"`;
   }
   if (filters && filters.car_type_id) {
     sql += ` AND car_type.id = "${filters.car_type_id}"`;
