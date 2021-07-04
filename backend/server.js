@@ -108,6 +108,21 @@ app.post("/register", async (request, response) => {
     });
   }
 });
+
+app.get("/rental/:id", async (request, response) => {
+  const rental_id = request.params.id;
+  const sql = /*sql*/ `
+    SELECT customer.full_name, customer.address, customer.email, car.id, reservation.rent_from, reservation.rent_to
+    FROM customer , rental, reservation, car
+    WHERE rental.id = ?
+      AND rental.reservation_id = reservation.id
+      AND rental.car_id = car.id
+      AND customer.id = reservation.customer_id
+   `;
+  const [rows, fields] = await con.query(sql, [rental_id]);
+  return response.json(rows);
+});
+
 app.get("/reservation/:id", async (request, response) => {
   const reservation_id = request.params.id;
   console.log(reservation_id);
