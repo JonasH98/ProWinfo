@@ -319,12 +319,18 @@ const numberOfCarsAvailableForType = async (typeId) => {
   return rows[0].cars_count;
 };
 
-app.listen(3000, async () => {
-  console.log(`Server is Listening on 3000`);
+app.listen(5431, async () => {
+  console.log(`Server is Listening on 5431`);
   con = await mysql.createConnection({
+<<<<<<< HEAD
     host: "localhost",
     user: "root",
     password: "123",
+=======
+    host: "217.160.71.120",
+    user: "adRental",
+    password: "uX_S8fyRjv4qcJWV",
+>>>>>>> 54da694881db8bfad86ec86f7f515adb46b85299
     database: "rental_portal",
   });
   const msg = await con.connect();

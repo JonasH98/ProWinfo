@@ -96,7 +96,7 @@ const getFilters = () => {
 const loadData = async () => {
   $(".content").html("");
   const filters = getFilters();
-  let data = await fetch("http://localhost:3000/cars", {
+  let data = await fetch("http://localhost:5431/cars", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -105,7 +105,7 @@ const loadData = async () => {
   });
   data = await data.json();
   console.log(data);
-  $("#loading-animation-lottie").css("display", "none");
+  $("#loading-animation-lottie-modal").css("display", "none");
   for (const car of data) {
     $(".content").append(
       createCarElement({
@@ -171,7 +171,8 @@ const openOtherTypesDialog = (data) => {
 };
 
 const reserveCar = async (car_type_id) => {
-  let data = await fetch("http://localhost:3000/reservation", {
+  $("#loading-animation-lottie-modal").css("display", "flex");
+  let data = await fetch("http://localhost:5431/reservation", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -185,6 +186,8 @@ const reserveCar = async (car_type_id) => {
   });
   data = await data.json();
   console.log(data);
+  $("#loading-animation-lottie-modal").css("display", "none");
+
   if (data.status === "warning" && data.data) {
     openOtherTypesDialog(data);
   } else if (data.status === "success") {
@@ -202,7 +205,7 @@ $(".filter-btn").click(function (e) {
   $(this).toggleClass("is-selected");
 });
 $(".submit-filter").click(async function (e) {
-  $("#loading-animation-lottie").css("display", "block");
+  $("#loading-animation-lottie-modal").css("display", "flex");
   await loadData();
 });
 
