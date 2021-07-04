@@ -42,8 +42,6 @@
     </script>
 </head>
 
-
-
 <body>
     <navbar>
         <div class="nav-group">
@@ -57,16 +55,8 @@
     </navbar>
     <main>
         <div class="car-item">
-            <h1>Mitarbeiter: Bas Seelig</h1>
-            <h1>Rücknahmeprotokoll</h1>
-            <label for="id">AutoID:</label>
-            <input type="number" id="autoid" name="autoid" min="1" max="200">
-            <label for="name">Kundenname:</label>
-            <input type="text" id="name" name="name">
-            <label for="start">Mietbegin:</label>
-            <input type="date" id="start" name="start" value="2021-06-28" min="2021-01-01" max="2022-12-31">
-            <label for="return">Rückgabe:</label>
-            <input type="date" id="return" name="return" value="2021-06-28" min="2021-01-01" max="2022-12-31">
+            <label for="rental_id">Mietvertragsnummer: </label>
+            <input type="text" name="rental_id">
             <label for="Kilometerstand">Neuer Kilometerstand:</label>
             <input type="number" id="Kilometerstand" name="Kilometerstand" min="1" max="1000000">
             <button onclick="genPDF();">PDF erzeugen</button>
