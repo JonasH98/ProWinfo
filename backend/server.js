@@ -108,12 +108,19 @@ app.post("/register", async (request, response) => {
     });
   }
 });
-app.get("/test123", async (request, response) => {
-  const sql = "UPDATE reservation set car_type_id = ? where id = ?";
-  for (let i = 1; i <= 100; i++) {
-    const typeid = Math.random() * (8 - 1) + 1;
-    await con.query(sql, [typeid, i]);
-  }
+
+app.get("/reservation/:id", async (request, response) => {
+  const reservation_id = request.params.id;
+  console.log(reservation_id);
+  const sql = /*sql*/ `
+    SELECT cus.full_name,cus.address,reservation.*,rental_station.location as location
+    FROM reservation,rental_station,customer as cus
+    WHERE reservation.id = ? 
+      AND reservation.customer_id = cus.id 
+      AND reservation.rental_station_id = rental_station.id
+   `;
+  const [rows, fields] = await con.query(sql, [reservation_id]);
+  return response.json(rows);
 });
 app.post("/reservation", async (request, response) => {
   const { car_type_id, date_from, date_to, customer_id } = request.body;
@@ -226,6 +233,12 @@ const getCars = async (carid, filters) => {
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
   }
+  if (filters && filters.location) {
+    sql += ` AND rental_station.id = "${filters.location}"`;
+  }
+  if (filters && filters.car_type_id) {
+    sql += ` AND car_type.id = "${filters.car_type_id}"`;
+  }
   sql += " ORDER BY rental_station.id";
 
   console.log(filters);
@@ -322,15 +335,9 @@ const numberOfCarsAvailableForType = async (typeId) => {
 app.listen(5431, async () => {
   console.log(`Server is Listening on 5431`);
   con = await mysql.createConnection({
-<<<<<<< HEAD
-    host: "localhost",
-    user: "root",
-    password: "123",
-=======
     host: "217.160.71.120",
     user: "adRental",
     password: "uX_S8fyRjv4qcJWV",
->>>>>>> 54da694881db8bfad86ec86f7f515adb46b85299
     database: "rental_portal",
   });
   const msg = await con.connect();

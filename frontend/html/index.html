@@ -10,22 +10,23 @@
     <title>Autovermietung</title>
     <script type="text/javascript">
       function checkFormular() {
-        var f=document.rentForm;
-        var fehler ="";
-        if(f.myStations.value =="") {
+        var f = document.rentForm;
+        var fehler = "";
+        if (f.myStations.value == "") {
           fehler += "-dein Abholort\n";
         }
-        if(f.startDate.value =="") {
+        if (f.startDate.value == "") {
           fehler += "-dein Abholdatum\n";
         }
-        if(f.endDate.value =="") {
+        if (f.endDate.value == "") {
           fehler += "-dein Rückgabedatum\n";
         }
-        if(f.endDate.value < f.startDate.value) {
+        if (f.endDate.value < f.startDate.value) {
           fehler += "-Rückgabedatum ist vor dem Abholdatum\n";
         }
-        if(fehler !="") {
-          var fehlertext = "Die folgenden Felder wurden nicht richtig ausgefüllt:\n\n";
+        if (fehler != "") {
+          var fehlertext =
+            "Die folgenden Felder wurden nicht richtig ausgefüllt:\n\n";
           fehlertext += fehler;
           alert(fehlertext + "\nBitte füll die Felder aus");
           return false;
@@ -52,20 +53,24 @@
     </navbar>
     <main>
       <div>
-        <form class="search-box" method="get" action="overview.html" name="rentForm" onSubmit="return checkFormular()">
+        <form
+          class="search-box"
+          method="get"
+          action="overview.html"
+          name="rentForm"
+          onSubmit="return checkFormular()"
+        >
           <label for="myStations">Abholort: </label>
-          <input list="stations" id="myStations" name="myStations">
-          <datalist id="stations">
-            <option value="Münster">
-            <option value="Borken">
-          </datalist>
+          <select name="myStations">
+            <option value="1">Münster</option>
+            <option value="2">Borken</option>
+          </select>
 
           <label for="startDate">Abholdatum</label>
-          <input type="date" id="startDate" name="startDate">
+          <input type="date" id="startDate" name="startDate" />
           <label for="endDate">Rückgabedatum</label>
-          <input type="date" id="endDate" name="endDate">
+          <input type="date" id="endDate" name="endDate" />
           <button type="submit">suchen</button>
-
         </form>
       </div>
     </main>

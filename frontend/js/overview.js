@@ -1,3 +1,5 @@
+let searchParams = new URLSearchParams(window.location.search);
+
 const createCarElement = (data) => {
   const features = data.features
     .map((feature) => `<span>- ${feature.name}</span><br>`)
@@ -15,7 +17,7 @@ const createCarElement = (data) => {
           </div>
           <div class="car-info">
             <div class="car-header">
-              <h1 class="car-name">${data.name}</h1>
+              <h1 class="car-name">${data.name} oder ähnliche...</h1>
             </div>
             <div class="car-info-content">
               <div class="car-specification car-type">
@@ -86,11 +88,13 @@ const getFilters = () => {
   const doors = getIds(".filter-btn-doors.is-selected");
   const features = getIds(".filter-btn-features.is-selected");
   const extras = getIds(".filter-btn-extras.is-selected");
+  const location = searchParams.get("myStations");
   return {
     classes: cls,
     doors: doors,
     features: features,
     extras: extras,
+    location: location,
   };
 };
 const loadData = async () => {
@@ -172,6 +176,8 @@ const openOtherTypesDialog = (data) => {
 
 const reserveCar = async (car_type_id) => {
   $("#loading-animation-lottie-modal").css("display", "flex");
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
   let data = await fetch("http://localhost:5431/reservation", {
     method: "POST",
     headers: {
@@ -179,8 +185,8 @@ const reserveCar = async (car_type_id) => {
     },
     body: JSON.stringify({
       car_type_id: car_type_id,
-      date_from: "2020-03-24",
-      date_to: "2020-04-27",
+      date_from: startDate, //"2020-03-24",
+      date_to: endDate, //"2020-04-27",
       customer_id: 2,
     }),
   });

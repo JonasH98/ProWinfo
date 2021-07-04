@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/overview.css" />
+    <link rel="stylesheet" href="../css/confirm_rental.css" />
+    <script src="../js/confirm_rental.js"></script>
+    <title>Mietvertrag abschließen</title>
+  </head>
+  <body>
+    <navbar>
+      <div class="nav-group">
+        <a href="index.html">
+          <img
+            src="../images/OneStopLogo_Light.png"
+            alt="LOGO"
+            class="brand-logo"
+        /></a>
+      </div>
+      <div class="nav-group">
+        <h2>Mietvertrag abschließen</h2>
+      </div>
+    </navbar>
+    <main>
+      <div class="search-and-data">
+        <div class="reserve-search">
+          <span>Reservierungsnummer: </span
+          ><input type="text" id="reserve_id" />
+          <button onclick="loadReserveData()">suchen</button>
+        </div>
+        <div class="reserve-data"></div>
+      </div>
+      <div class="content"></div>
+    </main>
+  </body>
+</html>
