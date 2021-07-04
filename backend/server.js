@@ -108,12 +108,19 @@ app.post("/register", async (request, response) => {
     });
   }
 });
-app.get("/test123", async (request, response) => {
-  const sql = "UPDATE reservation set car_type_id = ? where id = ?";
-  for (let i = 1; i <= 100; i++) {
-    const typeid = Math.random() * (8 - 1) + 1;
-    await con.query(sql, [typeid, i]);
-  }
+
+app.get("/reservation/:id", async (request, response) => {
+  const reservation_id = request.params.id;
+  console.log(reservation_id);
+  const sql = /*sql*/ `
+    SELECT cus.full_name,cus.address,reservation.*,rental_station.location as location
+    FROM reservation,rental_station,customer as cus
+    WHERE reservation.id = ? 
+      AND reservation.customer_id = cus.id 
+      AND reservation.rental_station_id = rental_station.id
+   `;
+  const [rows, fields] = await con.query(sql, [reservation_id]);
+  return response.json(rows);
 });
 app.post("/reservation", async (request, response) => {
   const { car_type_id, date_from, date_to, customer_id } = request.body;
@@ -225,6 +232,12 @@ const getCars = async (carid, filters) => {
   where car.car_type_id = car_type.id AND car.manufacturer_id = manufacturer.id AND car.rental_station_id = rental_station.id AND car_class.id = car_type.car_class_id`;
   if (carid) {
     sql += ` AND car.id = "${carid}"`;
+  }
+  if (filters && filters.location) {
+    sql += ` AND rental_station.id = "${filters.location}"`;
+  }
+  if (filters && filters.car_type_id) {
+    sql += ` AND car_type.id = "${filters.car_type_id}"`;
   }
   sql += " ORDER BY rental_station.id";
 

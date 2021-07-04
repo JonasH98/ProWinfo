@@ -1,0 +1,10 @@
+@import "./vars.css";
+.reserve-data {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  padding: 1rem;
+  background: var(--bg-very-dark);
+  border: 1px solid var(--col-accent);
+  gap: 0.5rem;
+}
