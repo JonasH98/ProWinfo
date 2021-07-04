@@ -26,10 +26,12 @@
                 "Holzweg 187, Entenhausen\n" +
                 "Mitarbeiter: Bas Seelig", 195, 40, null, null, "right");
             doc.text("Kundenname: " + data[0].full_name, 20, 80, null, null,);
-            doc.text("Auto-Nummer: " + data[0].id, 20, 85, null, null,);
-            doc.text("Mietbeginn: " + data[0].rent_from, 20, 90, null, null,);
-            doc.text("Rückgabe: " + data[0].rent_to, 20, 95, null, null,);
-            doc.text("Neuer Kilometerstand: " + Kilometerstand, 20, 100, null, null,);
+            doc.text("Adresse: " + data[0].address, 20, 85, null, null,);
+            doc.text("E-Mail: " + data[0].email, 20, 90, null, null,);
+            doc.text("Auto-Nummer: " + data[0].id, 20, 95, null, null,);
+            doc.text("Mietbeginn: " + data[0].rent_from, 20, 100, null, null,);
+            doc.text("Rückgabe: " + data[0].rent_to, 20, 105, null, null,);
+            doc.text("Neuer Kilometerstand: " + Kilometerstand, 20, 110, null, null,);
             doc.line(20, 200, 60, 200);
             doc.line(160, 200, 200, 200);
             doc.text("Unterschrift Kunde", 20, 210, null, null,);
