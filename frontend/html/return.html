@@ -10,14 +10,13 @@
     <title>Autovermietung</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
     <script>
-
-
-        function genPDF() {
-            let name = document.querySelector("#name").value;
-            let autoid = document.querySelector("#autoid").value;
-            let Mietbegin = document.querySelector("#start").value;
-            let Rueckgabe = document.querySelector("#return").value;
+        async function genPDF() {
+            const rental_id = document.querySelector("#rental_id").value;
+            let data = await fetch(`http://localhost:5431/rental/${rental_id}`);
+            data = await data.json();
+            console.log(data);
             let Kilometerstand = document.querySelector("#Kilometerstand").value;
+
 
             var doc = new jsPDF();
             doc.setFont("times", "bold");
@@ -26,19 +25,17 @@
             doc.text("One Stop GmbH \n" +
                 "Holzweg 187, Entenhausen\n" +
                 "Mitarbeiter: Bas Seelig", 195, 40, null, null, "right");
-            doc.text("Kundenname: " + name, 20, 80, null, null,);
-            doc.text("Auto-Nummer: " + autoid, 20, 85, null, null,);
-            doc.text("Mietbegin: " + Mietbegin, 20, 90, null, null,);
-            doc.text("Rückgabe: " + Rueckgabe, 20, 95, null, null,);
+            doc.text("Kundenname: " + data[0].full_name, 20, 80, null, null,);
+            doc.text("Auto-Nummer: " + data[0].id, 20, 85, null, null,);
+            doc.text("Mietbeginn: " + data[0].rent_from, 20, 90, null, null,);
+            doc.text("Rückgabe: " + data[0].rent_to, 20, 95, null, null,);
             doc.text("Neuer Kilometerstand: " + Kilometerstand, 20, 100, null, null,);
             doc.line(20, 200, 60, 200);
             doc.line(160, 200, 200, 200);
             doc.text("Unterschrift Kunde", 20, 210, null, null,);
             doc.text("Unterschrift Mitarbeiter", 150, 210, null, null,);
             doc.save('Test.pdf');
-
         }
-
     </script>
 </head>
 
@@ -56,7 +53,7 @@
     <main>
         <div class="car-item">
             <label for="rental_id">Mietvertragsnummer: </label>
-            <input type="text" name="rental_id">
+            <input type="text" name="rental_id" id="rental_id">
             <label for="Kilometerstand">Neuer Kilometerstand:</label>
             <input type="number" id="Kilometerstand" name="Kilometerstand" min="1" max="1000000">
             <button onclick="genPDF();">PDF erzeugen</button>
