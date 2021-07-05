@@ -22,9 +22,10 @@ if (localStorage.getItem("user") !== null) {
   const item = document.getElementsByClassName("nav-group-authentication")[0];
   item.style.display = "none";
   const adminBtn = /*html */ `<a href="admin_dashboard.html"><button>Admin Dashbaord</button></a>`;
+  const profileBtn = /*html */ `<button onclick="showProfileModal()">Profil</button>`;
   const logoutBtn = /*html */ `
     <div class="nav-group">
-    <button onclick="showProfileModal()">Profil</button>
+    ${isAdmin ? "" : profileBtn}
         <button onclick="doLogout()">Logout</button>
         ${isAdmin ? adminBtn : ""}
     </div>`;

@@ -1,4 +1,5 @@
 let reservation_id = null;
+let driven_km = 0;
 
 const imagesAvailable = {
   Kleinwagen: 7,
@@ -22,6 +23,11 @@ const createCarElement = (data) => {
   for (let index = 1; index <= imagesAvailable[data.type]; index++) {
     splide_slides += `<li class="splide__slide"><img src="../images/cars/${data.type}/${index}.png"/></li>`;
   }
+  const discountedPrice = (data.price - data.price * 0.1).toFixed(2);
+  const price =
+    driven_km >= 10000
+      ? `<del>${data.price + " €"}</del> ${discountedPrice + " €"}`
+      : `${data.price + " €"}`;
   return /*html*/ `<div class="car-item">
             <div class="splide">
               <div class="splide__track">
@@ -32,9 +38,7 @@ const createCarElement = (data) => {
             </div>
             <div class="car-info">
               <div class="car-header">
-                <span class="very-small-text">ähnlich wie <b>${
-                  data.type_name
-                }</b> von</span>
+                <span class="very-small-text">ähnlich wie <b>${data.type_name}</b> von</span>
                 <h1 class="car-name">${data.name}</h1>
               </div>
               <div class="car-info-content">
@@ -66,7 +70,7 @@ const createCarElement = (data) => {
                   <h2 class="car-specification-header">
                     <i class="far fa-money-bill-alt"></i> Preis
                   </h2>
-                  ${data.price + " €"}
+                  ${price}
                 </div>
               </div>
             </div>
@@ -156,6 +160,7 @@ const createReserveElement = (data) => {
         <span>Station: ${data.location}</span>
         <span>Start: ${data.rent_from.slice(0, 10)}</span>
         <span>Ende: ${data.rent_to.slice(0, 10)}</span>
+        <span>Statuskilometer: ${data.driven_km}</span>
     `;
 };
 
@@ -173,7 +178,9 @@ const loadReserveData = async () => {
     $(".reserve-data").html("<span>ungültige Reservierungsnummer</span>");
     return;
   }
-  console.log(data[0]);
-  $(".reserve-data").html(createReserveElement(data[0]));
-  loadData(data[0].car_type_id);
+  driven_km = data.driven_km;
+
+  console.log(data);
+  $(".reserve-data").html(createReserveElement(data));
+  loadData(data.car_type_id);
 };

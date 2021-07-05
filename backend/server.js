@@ -3,6 +3,7 @@ const mysql = require("mysql2/promise");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
 const moment = require("moment");
+const nodemailer = require("nodemailer");
 const app = express();
 app.use(express.json());
 app.use(
@@ -10,6 +11,31 @@ app.use(
     origin: "*",
   })
 );
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "app.testing.manu@gmail.com",
+    pass: "Qg2nXRyDvSXABkTG",
+  },
+});
+
+const sendmail = (to, header, body) => {
+  var mailOptions = {
+    from: "app.testing.manu@gmail.com",
+    to: to,
+    subject: header,
+    text: body,
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
 let con;
 
 let login_tries = new Map();
@@ -135,22 +161,11 @@ app.get("/profile", async (request, response) => {
   const newCustomer = { ...cust, driven_km: driven_km };
   return response.json(newCustomer);
 });
-const getDrivenKm = async (cust_id) => {
-  const sql = /*sql */ `
-              SELECT SUM(driven_kilometers) as driven_km
-              from take_back_protocol as tbp,rental as rent,reservation as rese
-              where tbp.rental_id = rent.id and rese.id = rent.reservation_id and rese.customer_id = ?
-  `;
-  const [rows, fields] = await con.query(sql, [cust_id]);
-
-  if (rows[0].driven_km !== null) return rows[0].driven_km;
-  return 0;
-};
 
 app.get("/rental/:id", async (request, response) => {
   const rental_id = request.params.id;
   const sql = /*sql*/ `
-    SELECT customer.full_name, customer.address, customer.email, car.id, reservation.rent_from, reservation.rent_to
+    SELECT customer.id as cus_id,customer.full_name, customer.address, customer.email, car.id, reservation.rent_from, reservation.rent_to
     FROM customer , rental, reservation, car
     WHERE rental.id = ?
       AND rental.reservation_id = reservation.id
@@ -158,6 +173,7 @@ app.get("/rental/:id", async (request, response) => {
       AND customer.id = reservation.customer_id
    `;
   const [rows, fields] = await con.query(sql, [rental_id]);
+
   return response.json(rows);
 });
 
@@ -184,14 +200,17 @@ app.get("/reservation/:id", async (request, response) => {
   const reservation_id = request.params.id;
   console.log(reservation_id);
   const sql = /*sql*/ `
-    SELECT cus.full_name,cus.address,reservation.*,rental_station.location as location
+    SELECT cus.full_name,cus.address,reservation.*,rental_station.location as location,cus.id as cus_id
     FROM reservation,rental_station,customer as cus
     WHERE reservation.id = ? 
       AND reservation.customer_id = cus.id 
       AND reservation.rental_station_id = rental_station.id
    `;
   const [rows, fields] = await con.query(sql, [reservation_id]);
-  return response.json(rows);
+  const cust = rows[0];
+  const driven_km = await getDrivenKm(cust.cus_id);
+  const newCustomer = { ...cust, driven_km: driven_km };
+  return response.json(newCustomer);
 });
 app.post("/reservation", async (request, response) => {
   const { car_type_id, date_from, date_to, customer_id, rental_station_id } =
@@ -247,7 +266,7 @@ app.post("/reservation", async (request, response) => {
       });
     }
     //write reservation to db
-    await con.query(sql_insert, [
+    const resultInsert = await con.query(sql_insert, [
       car_type_id,
       customer_id,
       new Date(Date.now()).toISOString().slice(0, 19).replace("T", " "),
@@ -255,6 +274,19 @@ app.post("/reservation", async (request, response) => {
       date_to,
       rental_station_id,
     ]);
+
+    const [emailrows, emailfields] = await con.query(
+      "SELECT email from customer where id = ?",
+      [customer_id]
+    );
+    const email = emailrows[0].email;
+
+    sendmail(
+      email,
+      "Ihre Reservierung",
+      "Reserveriungsnummer:" + resultInsert[0].insertId
+    );
+
     return response.json({
       status: "success",
       message: "erfolgreich reserviert",
@@ -272,7 +304,26 @@ app.post("/rent_car", async (request, response) => {
   const { car_id, reservation_id } = request.body;
   const sql = "INSERT INTO rental (car_id,reservation_id) VALUES(?,?)";
   try {
-    await con.query(sql, [car_id, reservation_id]);
+    const resultInsert = await con.query(sql, [car_id, reservation_id]);
+
+    const [emailrows, emailfields] = await con.query(
+      `SELECT email 
+      from customer
+      where customer.id = (
+        SELECT customer_id
+        from reservation
+        where id = ?
+      )`,
+      [reservation_id]
+    );
+    const email = emailrows[0].email;
+
+    sendmail(
+      email,
+      "Ihr Mietvertrag",
+      "Mietvertragsnummer:" + resultInsert[0].insertId
+    );
+
     return response.json({
       status: "success",
       message: "Mietvertrag erfolgreich abgeschlossen",
@@ -418,6 +469,17 @@ const numberOfCarsAvailableForType = async (typeId) => {
     [typeId]
   );
   return rows[0].cars_count;
+};
+const getDrivenKm = async (cust_id) => {
+  const sql = /*sql */ `
+              SELECT SUM(driven_kilometers) as driven_km
+              from take_back_protocol as tbp,rental as rent,reservation as rese
+              where tbp.rental_id = rent.id and rese.id = rent.reservation_id and rese.customer_id = ?
+  `;
+  const [rows, fields] = await con.query(sql, [cust_id]);
+
+  if (rows[0].driven_km !== null) return rows[0].driven_km;
+  return 0;
 };
 
 app.listen(5431, async () => {
