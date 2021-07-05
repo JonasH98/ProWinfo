@@ -8,13 +8,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rücknahme</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+    <link rel="stylesheet" href="../css/modal.css" />
+    <script src="../js/custom_modal_creator.js"></script>
     <script>
       async function genPDF() {
         const rental_id = document.querySelector("#rental_id").value;
+        const cur_kilometers = document.querySelector("#Kilometerstand").value;
+        const driven_kilometers = document.querySelector("#driven_km").value;
+        const jsbody = {
+          rental_id: rental_id,
+          cur_kilometers: cur_kilometers,
+          driven_kilometers: driven_kilometers,
+        };
+        console.log(jsbody);
+        let result = await fetch("http://localhost:5431/take_back_protocol", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(jsbody),
+        });
+        result = await result.json();
+        console.log(result);
         let data = await fetch(`http://localhost:5431/rental/${rental_id}`);
         data = await data.json();
         console.log(data);
-        let Kilometerstand = document.querySelector("#Kilometerstand").value;
 
         var doc = new jsPDF();
         doc.setFont("times", "bold");
@@ -34,15 +52,35 @@
         doc.text("Adresse: " + data[0].address, 20, 85, null, null);
         doc.text("E-Mail: " + data[0].email, 20, 90, null, null);
         doc.text("Auto-Nummer: " + data[0].id, 20, 95, null, null);
-        doc.text("Mietbeginn: " + data[0].rent_from, 20, 100, null, null);
-        doc.text("Rückgabe: " + data[0].rent_to, 20, 105, null, null);
         doc.text(
-          "Neuer Kilometerstand: " + Kilometerstand,
+          "Mietbeginn: " + data[0].rent_from.slice(0, 10),
+          20,
+          100,
+          null,
+          null
+        );
+        doc.text(
+          "Rückgabe: " + data[0].rent_to.slice(0, 10),
+          20,
+          105,
+          null,
+          null
+        );
+        doc.text(
+          "gefahrene Kilometer: " + driven_kilometers + " km",
           20,
           110,
           null,
           null
         );
+        doc.text(
+          "Neuer Kilometerstand: " + cur_kilometers + " km",
+          20,
+          115,
+          null,
+          null
+        );
+
         doc.line(20, 200, 60, 200);
         doc.line(160, 200, 200, 200);
         doc.text("Unterschrift Kunde", 20, 210, null, null);
@@ -70,6 +108,8 @@
       <div class="car-item">
         <label for="rental_id">Mietvertragsnummer: </label>
         <input type="text" name="rental_id" id="rental_id" />
+        <label for="driven_km">gefahrene Kilometer:</label>
+        <input type="number" id="driven_km" min="1" max="1000000" />
         <label for="Kilometerstand">Neuer Kilometerstand:</label>
         <input
           type="number"
@@ -78,7 +118,7 @@
           min="1"
           max="1000000"
         />
-        <button onclick="genPDF();">PDF erzeugen</button>
+        <button onclick="genPDF();">Absenden und PDF erzeugen</button>
       </div>
     </main>
   </body>

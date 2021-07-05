@@ -212,6 +212,9 @@ const reserveCar = async (car_type_id) => {
     );
     return;
   }
+  const email = localStorage.getItem("user");
+  let userData = await fetch(`http://localhost:5431/profile?email=${email}`);
+  userData = await userData.json();
 
   $("#loading-animation-lottie-modal").css("display", "flex");
   const startDate = searchParams.get("startDate");
@@ -225,7 +228,7 @@ const reserveCar = async (car_type_id) => {
       car_type_id: car_type_id,
       date_from: startDate, //"2020-03-24",
       date_to: endDate, //"2020-04-27",
-      customer_id: 2,
+      customer_id: userData.id,
       rental_station_id: searchParams.get("myStations"),
     }),
   });

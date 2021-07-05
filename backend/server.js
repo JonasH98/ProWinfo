@@ -124,6 +124,29 @@ app.post("/register", async (request, response) => {
   }
 });
 
+app.get("/profile", async (request, response) => {
+  const email = request.query.email;
+  const sql = `SELECT *
+                FROM customer
+                WHERE customer.email = ?`;
+  const [rows, fields] = await con.query(sql, [email]);
+  const cust = rows[0];
+  const driven_km = await getDrivenKm(cust.id);
+  const newCustomer = { ...cust, driven_km: driven_km };
+  return response.json(newCustomer);
+});
+const getDrivenKm = async (cust_id) => {
+  const sql = /*sql */ `
+              SELECT SUM(driven_kilometers) as driven_km
+              from take_back_protocol as tbp,rental as rent,reservation as rese
+              where tbp.rental_id = rent.id and rese.id = rent.reservation_id and rese.customer_id = ?
+  `;
+  const [rows, fields] = await con.query(sql, [cust_id]);
+
+  if (rows[0].driven_km !== null) return rows[0].driven_km;
+  return 0;
+};
+
 app.get("/rental/:id", async (request, response) => {
   const rental_id = request.params.id;
   const sql = /*sql*/ `
@@ -139,10 +162,12 @@ app.get("/rental/:id", async (request, response) => {
 });
 
 app.post("/take_back_protocol", async (request, response) => {
-  const { rental_id, cur_kilometers } = request.body;
-  const sql = /*sql*/ `INSERT INTO take_back_protocol (rental_id,cur_kilometers) VALUES (?,?)`;
+  const { rental_id, cur_kilometers, driven_kilometers } = request.body;
+  console.log(request.body);
+
+  const sql = /*sql*/ `INSERT INTO take_back_protocol (rental_id,cur_kilometers,driven_kilometers) VALUES (?,?,?)`;
   try {
-    await con.query(sql, [rental_id, cur_kilometers]);
+    await con.query(sql, [rental_id, cur_kilometers, driven_kilometers]);
     return response.json({
       status: "success",
       message: "Rücknahme erfolgreich abgeschlossen",
