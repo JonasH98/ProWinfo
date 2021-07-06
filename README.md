@@ -6,3 +6,4 @@ Das Gantt-Diagramm findet man auf [Excel Online](https://1drv.ms/x/s!AjjSCOAp57J
 <br>
 Soll und Istkosten sind hier einzusehen [Kostenplanung](https://docs.google.com/spreadsheets/d/1lM2SphQ5s_nz4ZoLcrUBxBhNV2qJ2Us2zwHPLbOFJgE/edit?usp=sharing)
 <br>
+Website erreichbar unter [hier](https://studishelfenstudis.de/ProWinfo/frontend/html/)
